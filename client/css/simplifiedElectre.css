@@ -1,0 +1,112 @@
+body {
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+a {
+  color: #1E90FF;
+  display: block;
+  text-decoration: none;
+}
+
+#homepageLink {
+  font-weight: bold;
+}
+
+h1 {
+  color: #1E90FF;
+  text-align: center;
+}
+
+#getResults {
+  margin-left: 88%;
+}
+
+#nextStep {
+  position: relative;
+  float: right;
+}
+
+#previousStep {
+  position: absolute;
+}
+
+table {
+  text-align: center;
+}
+
+/* Progress Bar */
+
+.progressContainer {
+  width: 600px;
+  margin-top: 5%;
+  margin-left: 25%;
+}
+
+.progressBar {
+  counter-reset: step;
+}
+
+.progressBar li {
+  list-style-type: none;
+  width: 25%; /*100% / 4 elements */
+  float: left;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  color: #7d7d7d;
+}
+
+.progressBar li:before {  /*create the circles*/
+  width: 30px;
+  height: 30px;
+  content: counter(step);
+  counter-increment: step;
+  line-height: 30px;
+  border: 2px solid #7d7d7d;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.progressBar li:after { /* create the lines between the circles*/
+  width: 100%;
+  height: 2px;
+  content: '';
+  position: absolute;
+  background-color: #7d7d7d;
+  top: 15px;
+  left: -50%;
+  z-index: -1;
+}
+
+.progressBar li:first-child:after {
+  content: none;
+}
+
+.progressBar li.active {
+  color: #1E90FF;
+}
+
+.progressBar li.active:before {
+  border-color: #1E90FF;
+}
+
+.progressBar li.active + li:after {
+  background-color: #1E90FF;
+}
+
+.progressBar li.current {
+  color: #2e2eb8;
+}
+
+.progressBar li.current:before {
+  border-color: #2e2eb8;
+}
+
+.progressBar li a { /*make names clickable*/
+  display: inline-block;
+  text-decoration: underline;
+}
