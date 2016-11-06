@@ -1,21 +1,21 @@
-app.controller('PerformanceController', ['$scope', '$http', '$window', function($scope, $http, $window){
+app.controller('ActionsPerformanceController', ['$scope', '$http', '$window', function($scope, $http, $window){
 
   var getCriteria = function () {
-      $http.get('/criteria').success(function(response) {
+      $http.get('/CompleteCriteria').success(function(response) {
         //update table
         $scope.criteria = response;
       });
   }
 
   var getAlternatives = function () {
-      $http.get('/actions').success(function(response) {
+      $http.get('/CompleteActions').success(function(response) {
         //update table
         $scope.actions = response;
       });
   }
 
   var getPerformanceValues = function() {
-    $http.get('/performancetable').success(function(response) {
+    $http.get('/CompleteActionsPerformance').success(function(response) {
       $scope.performanceValues = response;
 
       //If there are any stored values in the database, put them on the table
@@ -43,7 +43,7 @@ app.controller('PerformanceController', ['$scope', '$http', '$window', function(
 
   $scope.submitValues = function() {
     //delete previous values
-    $http.delete('/performancetable').success(function(response) {
+    $http.delete('/CompleteActionsPerformance').success(function(response) {
       $('input.valueInput').each(function() {
         $this = $(this);
         var id = $this.attr('id');
@@ -57,7 +57,7 @@ app.controller('PerformanceController', ['$scope', '$http', '$window', function(
         var obj = JSON.parse(text);
 
         //store json on database
-        $http.post('/performancetable', obj).success(function(response) {
+        $http.post('/CompleteActionsPerformance', obj).success(function(response) {
         });
       });
     });
@@ -65,7 +65,7 @@ app.controller('PerformanceController', ['$scope', '$http', '$window', function(
 
   $scope.addAction = function() {
     //store criterion on db
-    $http.post('/actions', $scope.action).success(function(response) {
+    $http.post('/CompleteActions', $scope.action).success(function(response) {
       //clear input field
       $scope.action.name = '';
       //show criterion in list in html
@@ -75,7 +75,7 @@ app.controller('PerformanceController', ['$scope', '$http', '$window', function(
 
   $scope.deleteAction = function(id) {
     //remove criterion from db
-    $http.delete('/actions/' + id).success(function(response) {
+    $http.delete('/CompleteActions/' + id).success(function(response) {
       //remove criterion from list in html
       refreshPerformance();
     });

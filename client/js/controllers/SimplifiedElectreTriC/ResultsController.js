@@ -1,4 +1,4 @@
-app.controller('Results', ['$scope', '$http', function($scope, $http) {
+app.controller('ResultsController', ['$scope', '$http', function($scope, $http) {
   var actionRelations = [];
   var minCategories = [];
   var maxCategories = [];

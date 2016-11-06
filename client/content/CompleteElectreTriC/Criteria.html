@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DecisionSpace - Complete Electre Tri-C Method - Step 1</title>
+
+    <!-- CSS Stylesheet -->
+    <link rel = 'stylesheet' type = 'text/css' href = '../../css/simplifiedElectre.css' />
+
+    <!-- jQuery -->
+    <script type = 'text/javascript' src = '../../js/shared/jquery-3.1.0.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/jquery-ui-1.12.0/jquery-ui.js'></script>
+
+    <!-- AngularJS -->
+    <script src = '../../js/shared/angular.min.js'></script>
+
+    <!-- AngularJS Modules -->
+    <script src = '../../js/app.js'></script>
+
+    <!-- AngularJS Controllers -->
+    <script src = '../../js/controllers/CompleteElectreTriC/CriteriaController.js'></script>
+
+    <!-- Bootstrap
+    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' /> -->
+  </head>
+
+  <body ng-app = 'decisionSpace' ng-controller = 'CriteriaController'>
+    <a id = 'homepageLink' href = '../../index.html'> DecisionSpace </a>
+
+    <h1>Step 1: Add The Criteria</h1>
+
+    <table align = 'center'>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Weight</th>
+          <th>Indifference Threshold</th>
+          <th>Preference Threshold</th>
+          <th>Veto Threshold</th>
+          <th>Direction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input ng-model = 'criterion.name'/>
+          </td>
+          <td>
+            <input ng-model = 'criterion.weight' type = 'number' />
+          </td>
+          <td>
+            <input ng-model = 'criterion.indifference' type = 'number' />
+          </td>
+          <td>
+            <input ng-model = 'criterion.preference' type = 'number' />
+          </td>
+          <td>
+            <input ng-model = 'criterion.veto' type = 'number' />
+          </td>
+          <td>
+            <select>
+              <option value = 'Maximize'>Maximize</option>
+              <option value = 'Minimize'>Minimize</option>
+            </select>
+          </td>
+          <td>
+            <button ng-click = 'addCriterion()'>Add</button>
+          </td>
+        </tr>
+        <tr ng-repeat = 'criterion in criteria'>
+          <td> {{criterion.name}} </td>
+          <td> {{criterion.weight}} </td>
+          <td> {{criterion.indifference}} </td>
+          <td> {{criterion.preference}} </td>
+          <td> {{criterion.veto}} </td>
+          <td> {{criterion.direction}} </td>
+          <td><button ng-click = "deleteCriterion(criterion._id)">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class = 'progressContainer'>
+      <ul class = 'progressBar'>
+        <li class = 'current'>Add Criteria</li>
+        <li>Fill Performance Table</li>
+        <li>Add Categories</li>
+        <li>Choose Credibility Level and Fill Profiles Table</li>
+      </ul>
+    </div>
+
+    <button id = 'nextStep' ng-click = 'checkWeights()'>Next Step</button>
+
+  </body>
+</html>

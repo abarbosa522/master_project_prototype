@@ -30,6 +30,10 @@ h1 {
   position: absolute;
 }
 
+#submitValues {
+  float: right;
+}
+
 table {
   text-align: center;
 }
