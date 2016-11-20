@@ -3,6 +3,8 @@
   <head>
     <title>DecSpace - Simplified Electre Tri-C Method - Results</title>
 
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+
     <!-- CSS Stylesheet -->
     <link rel = 'stylesheet' type = 'text/css' href = '../../css/electre.css' />
 
@@ -19,41 +21,54 @@
     <!-- AngularJS Controllers -->
     <script src = '../../js/controllers/SimplifiedElectreTriC/ResultsController.js'></script>
 
-    <!-- Bootstrap
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' /> -->
+    <!-- Bootstrap -->
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' />
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
   </head>
 
   <body ng-app = 'decisionSpace' ng-controller = 'ResultsController'>
-    <a id = 'homepageLink' href = '../../index.html'> DecSpace </a>
 
-    <h1>Results</h1>
+    <div class = 'container'>
 
-    <table align = 'center'>
-      <thead>
-        <tr>
-          <th>Action</th>
-          <th>Minimum Category</th>
-          <th>Maximum Category</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat = 'result in results'>
-          <td> {{result.name}} </td>
-          <td> {{result.min}} </td>
-          <td> {{result.max}} </td>
-        </tr>
-      </tbody>
-    </table>
+      <nav class = 'navbar navbar-default'>
+        <div class = 'container-fluid'>
+          <ul class = 'nav navbar-nav'>
+            <li><a id = 'homepageLink' href = '../../index.html'>Home</a></li>
+          </ul>
+        </div>
+      </nav>
 
-    <div class = 'progressContainer'>
-      <ul class = 'progressBar'>
-        <li class = 'active'><a href = 'Criteria.html'>Add Criteria</a></li>
-        <li class = 'active'><a href = 'ActionsPerformance.html'>Fill Performance Table</a></li>
-        <li class = 'active'><a href = 'Categories.html'>Add Categories</a></li>
-        <li class = 'active'><a href = 'ProfilesPerformance.html'>Choose Credibility Level and Fill Profiles Table</a></li>
-      </ul>
+      <h1>Results</h1>
+
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover'>
+          <thead>
+            <tr>
+              <th class = 'text-center'>Action</th>
+              <th class = 'text-center'>Minimum Category</th>
+              <th class = 'text-center'>Maximum Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat = 'result in results'>
+              <td> {{result.name}} </td>
+              <td> {{result.min}} </td>
+              <td> {{result.max}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class = 'progressContainer'>
+        <ul class = 'progressBar'>
+          <li class = 'active'><a href = 'Criteria.html'>Add Criteria</a></li>
+          <li class = 'active'><a href = 'ActionsPerformance.html'>Fill Performance Table</a></li>
+          <li class = 'active'><a href = 'Categories.html'>Add Categories</a></li>
+          <li class = 'active'><a href = 'ProfilesPerformance.html'>Choose Credibility Level and Fill Profiles Table</a></li>
+        </ul>
+      </div>
     </div>
-
   </body>
 </html>

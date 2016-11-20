@@ -3,6 +3,8 @@
   <head>
     <title>DecSpace - Complete Electre Tri-C Method - Step 1</title>
 
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+
     <!-- CSS Stylesheet -->
     <link rel = 'stylesheet' type = 'text/css' href = '../../css/electre.css' />
 
@@ -19,76 +21,88 @@
     <!-- AngularJS Controllers -->
     <script src = '../../js/controllers/CompleteElectreTriC/CriteriaController.js'></script>
 
-    <!-- Bootstrap
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' /> -->
+    <!-- Bootstrap -->
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' />
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
   </head>
 
   <body ng-app = 'decisionSpace' ng-controller = 'CriteriaController'>
-    <a id = 'homepageLink' href = '../../index.html'> DecSpace </a>
+    <div class = 'container'>
 
-    <h1>Step 1: Add The Criteria</h1>
+      <nav class = 'navbar navbar-default'>
+        <div class = 'container-fluid'>
+            <ul class = 'nav navbar-nav'>
+              <li><a href = '../../index.html'>Home</a></li>
+            </ul>
+        </div>
+      </nav>
 
-    <table align = 'center'>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Weight</th>
-          <th>Indifference Threshold</th>
-          <th>Preference Threshold</th>
-          <th>Veto Threshold</th>
-          <th>Direction</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <input ng-model = 'criterion.name'/>
-          </td>
-          <td>
-            <input ng-model = 'criterion.weight' type = 'number' />
-          </td>
-          <td>
-            <input ng-model = 'criterion.indifference' type = 'number' />
-          </td>
-          <td>
-            <input ng-model = 'criterion.preference' type = 'number' />
-          </td>
-          <td>
-            <input ng-model = 'criterion.veto' type = 'number' />
-          </td>
-          <td>
-            <select>
-              <option value = 'Maximize'>Maximize</option>
-              <option value = 'Minimize'>Minimize</option>
-            </select>
-          </td>
-          <td>
-            <button ng-click = 'addCriterion()'>Add</button>
-          </td>
-        </tr>
-        <tr ng-repeat = 'criterion in criteria'>
-          <td> {{criterion.name}} </td>
-          <td> {{criterion.weight}} </td>
-          <td> {{criterion.indifference}} </td>
-          <td> {{criterion.preference}} </td>
-          <td> {{criterion.veto}} </td>
-          <td> {{criterion.direction}} </td>
-          <td><button ng-click = "deleteCriterion(criterion._id)">Delete</button></td>
-        </tr>
-      </tbody>
-    </table>
+      <h1>Step 1: Add The Criteria</h1>
 
-    <div class = 'progressContainer'>
-      <ul class = 'progressBar'>
-        <li class = 'current'>Add Criteria</li>
-        <li>Fill Performance Table</li>
-        <li>Add Categories</li>
-        <li>Choose Credibility Level and Fill Profiles Table</li>
-      </ul>
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover'>
+          <thead>
+            <tr>
+              <th class = 'text-center'>Name</th>
+              <th class = 'text-center'>Weight</th>
+              <th class = 'text-center'>Indifference Threshold</th>
+              <th class = 'text-center'>Preference Threshold</th>
+              <th class = 'text-center'>Veto Threshold</th>
+              <th class = 'text-center'>Direction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'criterion.name'/>
+              </td>
+              <td>
+                <input class = 'form-control' type = 'number' ng-model = 'criterion.weight' />
+              </td>
+              <td>
+                <input class = 'form-control' type = 'number' ng-model = 'criterion.indifference' />
+              </td>
+              <td>
+                <input class = 'form-control' type = 'number' ng-model = 'criterion.preference' />
+              </td>
+              <td>
+                <input class = 'form-control' type = 'number' ng-model = 'criterion.veto' />
+              </td>
+              <td>
+                <select>
+                  <option value = 'Maximize'>Maximize</option>
+                  <option value = 'Minimize'>Minimize</option>
+                </select>
+              </td>
+              <td>
+                <button type = 'button' class = 'btn btn-success btn-sm' ng-click = 'addCriterion()'>Add</button>
+              </td>
+            </tr>
+            <tr ng-repeat = 'criterion in criteria'>
+              <td> {{criterion.name}} </td>
+              <td> {{criterion.weight}} </td>
+              <td> {{criterion.indifference}} </td>
+              <td> {{criterion.preference}} </td>
+              <td> {{criterion.veto}} </td>
+              <td> {{criterion.direction}} </td>
+              <td><button type = 'button' class = 'btn btn-danger btn-sm' ng-click = "deleteCriterion(criterion._id)">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class = 'progressContainer'>
+        <ul class = 'progressBar'>
+          <li class = 'current'>Add Criteria</li>
+          <li>Fill Performance Table</li>
+          <li>Add Categories</li>
+          <li>Choose Credibility Level and Fill Profiles Table</li>
+        </ul>
+      </div>
+
+      <button type = 'button' class = 'btn btn-primary btn-sm' id = 'nextStep' ng-click = 'checkWeights()'>Next Step</button>
     </div>
-
-    <button id = 'nextStep' ng-click = 'checkWeights()'>Next Step</button>
-
   </body>
 </html>

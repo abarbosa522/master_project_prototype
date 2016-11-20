@@ -3,6 +3,8 @@
   <head>
     <title>DecSpace - Simplified Electre Tri-C Method - Step 3</title>
 
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+
     <!-- CSS Stylesheet -->
     <link rel = 'stylesheet' type = 'text/css' href = '../../css/electre.css' />
 
@@ -19,64 +21,77 @@
     <!-- AngularJS Controllers -->
     <script src = '../../js/controllers/SimplifiedElectreTriC/CategoriesController.js'></script>
 
-    <!-- Bootstrap
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' /> -->
+    <!-- Bootstrap -->
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' />
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
   </head>
 
   <body ng-app = 'decisionSpace' ng-controller = 'CategoriesController'>
-    <a id = 'homepageLink' href = '../../index.html'> DecSpace </a>
 
-    <h1>Step 3: Add The Categories</h1>
+    <div class = 'container'>
 
-    <table align = 'center'>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Ranking</th>
-          <th>Reference Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <input ng-model = 'category.name'/>
-          </td>
-          <td>
-            <select>
-              <option value= '1'>1</option>
-            </select>
-          </td>
-          <td>
-            <input ng-model = 'category.referenceAction' />
-          </td>
-          <td>
-            <button ng-click = 'addCategory()'> Add </button>
-          </td>
-        </tr>
-        <tr ng-repeat = 'category in categories'>
-          <td> {{category.name}} </td>
-          <td> {{category.ranking}} </td>
-          <td> {{category.referenceAction}} </td>
-          <td><button ng-click = "deleteCategory(category._id)"> Delete </button></td>
-        </tr>
-      </tbody>
-    </table>
+      <nav class = 'navbar navbar-default'>
+        <div class = 'container-fluid'>
+          <ul class = 'nav navbar-nav'>
+            <li><a id = 'homepageLink' href = '../../index.html'>Home</a></li>
+          </ul>
+        </div>
+      </nav>
 
-    <div>
-      <button id = 'previousStep' onclick = "location.href = 'ActionsPerformance.html'"> Previous Step </button>
+      <h1>Step 3: Add The Categories</h1>
 
-      <div class = 'progressContainer'>
-        <ul class = 'progressBar'>
-          <li class = 'active'>Add Criteria</li>
-          <li class = 'active'>Fill Performance Table</li>
-          <li class = 'current'>Add Categories</li>
-          <li>Choose Credibility Level and Fill Profiles Table</li>
-        </ul>
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover'>
+          <thead>
+            <tr>
+              <th class = 'text-center'>Name</th>
+              <th class = 'text-center'>Ranking</th>
+              <th class = 'text-center'>Reference Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'category.name'/>
+              </td>
+              <td>
+                <select>
+                  <option val = '1'>1</option>
+                </select>
+              </td>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'category.referenceAction' />
+              </td>
+              <td>
+                <button type = 'button' class = 'btn btn-success btn-sm' ng-click = 'addCategory()'> Add </button>
+              </td>
+            </tr>
+            <tr ng-repeat = 'category in categories'>
+              <td> {{category.name}} </td>
+              <td> {{category.ranking}} </td>
+              <td> {{category.referenceAction}} </td>
+              <td><button type = 'button' class = 'btn btn-danger btn-sm' ng-click = "deleteCategory(category._id)"> Delete </button></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <button id = 'nextStep' ng-click = 'submitRankings()'> Next Step </button>
-    </div>
+      <div>
+        <button type = 'button' class = 'btn btn-primary btn-sm' id = 'previousStep' onclick = "location.href = 'ActionsPerformance.html'"> Previous Step </button>
 
+        <div class = 'progressContainer'>
+          <ul class = 'progressBar'>
+            <li class = 'active'>Add Criteria</li>
+            <li class = 'active'>Fill Performance Table</li>
+            <li class = 'current'>Add Categories</li>
+            <li>Choose Credibility Level and Fill Profiles Table</li>
+          </ul>
+        </div>
+
+        <button type = 'button' class = 'btn btn-primary btn-sm' id = 'nextStep' ng-click = 'submitRankings()'> Next Step </button>
+      </div>
+    </div>
   </body>
 </html>

@@ -3,6 +3,8 @@
   <head>
     <title>DecSpace - Complete Electre Tri-C Method - Steps 4 and 5</title>
 
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+
     <!-- CSS Stylesheet -->
     <link rel = 'stylesheet' type = 'text/css' href = '../../css/electre.css' />
 
@@ -20,64 +22,82 @@
     <script src = '../../js/controllers/CompleteElectreTriC/CredibilityController.js'></script>
     <script src = '../../js/controllers/CompleteElectreTriC/ProfilesPerformanceController.js'></script>
 
-    <!-- Bootstrap
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' /> -->
+    <!-- Bootstrap -->
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' />
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
   </head>
 
   <body ng-app = 'decisionSpace'>
-    <a id = 'homepageLink' href = '../../index.html'> DecSpace </a>
 
-    <div ng-controller = 'CredibilityController'>
-      <h1>Step 4: Choose a Credibility Level</h1>
-
-      <table align = 'center'>
-        <tr>
-          <th>Credibility Level</th>
-        </tr>
-        <tr>
-          <td>
-            <input id = 'credibilityInput' ng-model = 'credibility.value' type = 'number' />
-          </td>
-          <td>
-            <button ng-click = 'submitCredibility()'>Submit Value</button>
-          </td>
-        </tr>
-      </table>
-    </div>
-
-    <div ng-controller = 'ProfilesPerformanceController'>
-      <h1>Step 5: Fill in the Profiles Performance Table</h1>
-
-      <table align = 'center'>
-        <tr>
-          <th>Reference Action</th>
-          <th ng-repeat = 'criterion in criteria'> {{criterion.name}} </th>
-        </tr>
-        <tr ng-repeat = 'action in actions'>
-          <td id = 'action'> {{action.referenceAction}} </td>
-          <td ng-repeat = 'criterion in criteria' class = 'inputvalue'>
-            <input id = {{action.referenceAction}}/{{criterion.name}} type = 'number'/>
-          </td>
-        </tr>
-      </table>
-      <button  id = 'submitValues' ng-click = 'submitValues()'>Submit Values</button>
-      <div>
-        <button id = 'previousStep' onclick = "location.href = 'Categories.html'"> Previous Step </button>
-
-        <div class = 'progressContainer'>
-          <ul class = 'progressBar'>
-            <li class = 'active'>Add Criteria</li>
-            <li class = 'active'>Fill Performance Table</li>
-            <li class = 'active'>Add Categories</li>
-            <li class = 'current'>Choose Credibility Level and Fill Profiles Table</li>
+    <div class = 'container'>
+      <nav class = 'navbar navbar-default'>
+        <div class = 'container-fluid'>
+          <ul class = 'nav navbar-nav'>
+            <li><a id = 'homepageLink' href = '../../index.html'>Home</a></li>
           </ul>
         </div>
+      </nav>
 
-        <button id = 'nextStep' ng-click = 'nextStep()'> Get Results </button>
+      <div ng-controller = 'CredibilityController'>
+        <h1>Step 4: Choose a Credibility Level</h1>
+
+        <div class = 'row'>
+          <table align = 'center'>
+            <tr>
+              <td>
+                <div class = 'input-group input-group-sm'>
+                  <input type = 'number' class = 'form-control' id = 'credibilityInput' ng-model = 'credibility.value' type = 'number'>
+                  <span class = 'input-group-btn'>
+                    <button class = 'btn btn-default' ng-click = 'submitCredibility()'>Submit</button>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
 
-    </div>
+      <div ng-controller = 'ProfilesPerformanceController'>
+        <h1>Step 5: Fill in the Profiles Performance Table</h1>
 
+        <div class = 'row'>
+          <table class = 'table table-bordered table-striped table-hover'>
+            <thead>
+              <tr>
+                <th class = 'text-center'>Reference Action</th>
+                <th class = 'text-center' ng-repeat = 'criterion in criteria'> {{criterion.name}} </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat = 'action in actions'>
+                <td id = 'action'> {{action.referenceAction}} </td>
+                <td ng-repeat = 'criterion in criteria' class = 'inputvalue'>
+                  <input class = 'form-control' type = 'number' id = {{action.referenceAction}}/{{criterion.name}} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button  type = 'button' class = 'btn btn-success btn-sm' id = 'submitValues' ng-click = 'submitValues()'>Submit Values</button>
+
+        <div>
+          <button type = 'button' class = 'btn btn-primary btn-sm' id = 'previousStep' onclick = "location.href = 'Categories.html'"> Previous Step </button>
+
+          <div class = 'progressContainer'>
+            <ul class = 'progressBar'>
+              <li class = 'active'>Add Criteria</li>
+              <li class = 'active'>Fill Performance Table</li>
+              <li class = 'active'>Add Categories</li>
+              <li class = 'current'>Choose Credibility Level and Fill Profiles Table</li>
+            </ul>
+          </div>
+
+          <button type = 'button' class = 'btn btn-primary btn-sm' id = 'nextStep' ng-click = 'nextStep()'> Get Results </button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

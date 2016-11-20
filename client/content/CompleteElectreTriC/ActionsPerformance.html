@@ -3,6 +3,8 @@
   <head>
     <title>DecSpace - Complete Electre Tri-C Method - Step 2</title>
 
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+
     <!-- CSS Stylesheet -->
     <link rel = 'stylesheet' type = 'text/css' href = '../../css/electre.css' />
 
@@ -19,57 +21,71 @@
     <!-- AngularJS Controllers -->
     <script src = '../../js/controllers/CompleteElectreTriC/ActionsPerformanceController.js'></script>
 
-    <!-- Bootstrap
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' /> -->
+    <!-- Bootstrap -->
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' />
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
   </head>
 
   <body ng-app = 'decisionSpace' ng-controller = 'ActionsPerformanceController'>
-    <a id = 'homepageLink' href = '../../index.html'> DecSpace </a>
+    <div class = 'container'>
 
-    <h1>Step 2: Fill in the Performance Table</h1>
+      <nav class = 'navbar navbar-default'>
+        <div class = 'container-fluid'>
+            <ul class = 'nav navbar-nav'>
+              <li><a href = '../../index.html'>Home</a></li>
+            </ul>
+        </div>
+      </nav>
 
-    <table id = 'performancetable' align = 'center'>
-      <tr>
-        <th>Action</th>
-        <th ng-repeat = 'criterion in criteria'> {{criterion.name}} </th>
-      </tr>
-      <tr ng-repeat = 'action in actions'>
-        <td id = 'action'> {{action.name}} </td>
-        <td ng-repeat = 'criterion in criteria' class = 'inputvalue'>
-          <input id = {{action.name}}/{{criterion.name}} class = 'valueInput' type = 'number' />
-        </td>
-        <td>
-          <button ng-click = 'deleteAction(action._id)'>Delete Action</button>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input ng-model = 'action.name'/>
-        </td>
-        <td ng-repeat = 'criterion in criteria'> </td>
-        <td>
-          <button ng-click = 'addAction()'> Add Action </button>
-        </td>
-      </tr>
-    </table>
+      <h1>Step 2: Fill in the Performance Table</h1>
 
-    <button id = 'submitValues' ng-click = 'submitValues()'>Submit Values</button>
-
-    <div>
-      <button id = 'previousStep' onclick = "location.href = 'Criteria.html'"> Previous Step </button>
-
-      <div class = 'progressContainer'>
-        <ul class = 'progressBar'>
-          <li class = 'active'>Add Criteria</li>
-          <li class = 'current'>Fill Performance Table</li>
-          <li>Add Categories</li>
-          <li>Choose Credibility Level and Fill Profiles Table</li>
-        </ul>
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover' id = 'performancetable'>
+          <thead>
+            <tr>
+              <th class = 'text-center'>Action</th>
+              <th class = 'text-center' ng-repeat = 'criterion in criteria'> {{criterion.name}} </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'action.name'/>
+              </td>
+              <td ng-repeat = 'criterion in criteria'>
+                <input class = 'valueInput form-control' type = 'number' id = {{criterion.name}} />
+              </td>
+              <td>
+                <button class = 'btn btn-success btn-sm' ng-click = 'addAction()'> Add </button>
+              </td>
+            </tr>
+            <tr ng-repeat = 'action in actions'>
+              <td id = 'action'> {{action.name}} </td>
+              <td ng-repeat = 'criterion in criteria' class = 'inputvalue' id = {{action.name}}/{{criterion.name}}></td>
+              <td>
+                <button class = 'btn btn-danger btn-sm' ng-click = 'deleteAction(action.name, action._id)'>Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <button id = 'nextStep' ng-click = 'nextStep()'> Next Step </button>
-    </div>
+      <div>
+        <button type = 'button' class = 'btn btn-primary btn-sm' id = 'previousStep' onclick = "location.href = 'Criteria.html'"> Previous Step </button>
 
+        <div class = 'progressContainer'>
+          <ul class = 'progressBar'>
+            <li class = 'active'>Add Criteria</li>
+            <li class = 'current'>Fill Performance Table</li>
+            <li>Add Categories</li>
+            <li>Choose Credibility Level and Fill Profiles Table</li>
+          </ul>
+        </div>
+
+        <button type = 'button' class = 'btn btn-primary btn-sm' id = 'nextStep' ng-click = 'nextStep()'> Next Step </button>
+      </div>
+    </div>
   </body>
 </html>

@@ -71,8 +71,9 @@ app.post('/performancetable', function(req, res) {
   });
 });
 
-app.delete('/performancetable', function(req, res) {
-  db3.performancedb.remove(function(err, doc) {
+app.delete('/performancetable/:id', function(req, res) {
+  var id = req.params.id;
+  db3.performancedb.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
     res.json(doc);
   })
 });
@@ -198,8 +199,9 @@ app.post('/CompleteActionsPerformance', function(req, res) {
   });
 });
 
-app.delete('/CompleteActionsPerformance', function(req, res) {
-  db9.actionperformancecollection.remove(function(err, doc) {
+app.delete('/CompleteActionsPerformance/:id', function(req, res) {
+  var id = req.params.id;
+  db9.actionperformancecollection.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
     res.json(doc);
   })
 });

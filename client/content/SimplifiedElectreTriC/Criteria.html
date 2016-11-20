@@ -3,6 +3,8 @@
   <head>
     <title>DecSpace - Simplified Electre Tri-C Method - Step 1</title>
 
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+
     <!-- CSS Stylesheet -->
     <link rel = 'stylesheet' type = 'text/css' href = '../../css/electre.css' />
 
@@ -19,53 +21,70 @@
     <!-- AngularJS Controllers -->
     <script src = '../../js/controllers/SimplifiedElectreTriC/CriteriaController.js'></script>
 
-    <!-- Bootstrap
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
-    <link rel = 'stylesheet' href = '../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' /> -->
+    <!-- Bootstrap -->
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' />
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
   </head>
 
   <body ng-app = 'decisionSpace' ng-controller = 'CriteriaController'>
-    <a id = 'homepageLink' href = '../../index.html'> DecSpace </a>
 
-    <h1>Step 1: Add The Criteria</h1>
+    <div class = 'container'>
 
-    <table align = 'center'>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Weight</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <input ng-model = 'criterion.name'/>
-          </td>
-          <td>
-            <input ng-model = 'criterion.weight' type = 'number' />
-          </td>
-          <td>
-            <button ng-click = 'addCriterion()'>Add</button>
-          </td>
-        </tr>
-        <tr ng-repeat = 'criterion in criteria'>
-          <td> {{criterion.name}} </td>
-          <td> {{criterion.weight}} </td>
-          <td><button ng-click = "deleteCriterion(criterion._id)">Delete</button></td>
-        </tr>
-      </tbody>
-    </table>
+      <nav class = 'navbar navbar-default'>
+        <div class = 'container-fluid'>
+            <ul class = 'nav navbar-nav'>
+              <li><a href = '../../index.html'>Home</a></li>
+            </ul>
+        </div>
+      </nav>
 
-    <div class = 'progressContainer'>
-      <ul class = 'progressBar'>
-        <li class = 'current'>Add Criteria</li>
-        <li>Fill Performance Table</li>
-        <li>Add Categories</li>
-        <li>Choose Credibility Level and Fill Profiles Table</li>
-      </ul>
+      <h1>Step 1: Add The Criteria</h1>
+
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover'>
+          <thead>
+            <tr>
+              <th class = 'text-center'>Name</th>
+              <th class = 'text-center'>Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'criterion.name'/>
+              </td>
+              <td>
+                <input class = 'form-control' type = 'number' ng-model = 'criterion.weight'/>
+              </td>
+              <td>
+                <button class = 'btn btn-success btn-sm' ng-click = 'addCriterion()'>Add</button>
+              </td>
+            </tr>
+            <tr ng-repeat = 'criterion in criteria'>
+              <td> {{criterion.name}} </td>
+              <td> {{criterion.weight}} </td>
+              <td><button class = 'btn btn-danger btn-sm' ng-click = "deleteCriterion(criterion._id)">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class = 'progressContainer'>
+        <ul class = 'progressBar'>
+          <li class = 'current'>Add Criteria</li>
+          <li>Fill Performance Table</li>
+          <li>Add Categories</li>
+          <li>Choose Credibility Level and Fill Profiles Table</li>
+        </ul>
+      </div>
+
+      <button type = 'button' class = 'btn btn-primary btn-sm' id = 'nextStep' ng-click = 'checkWeights()'>
+        Next Step
+        <span class = 'glyphicon glyphicon-menu-right' aria-hidden = 'true'/>
+      </button>
+
     </div>
-
-    <button id = 'nextStep' ng-click = 'checkWeights()'>Next Step</button>
-
   </body>
 </html>
