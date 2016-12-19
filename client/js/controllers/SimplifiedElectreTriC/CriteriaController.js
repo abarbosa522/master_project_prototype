@@ -4,6 +4,7 @@ app.controller('CriteriaController', ['$scope', '$http', '$window', function($sc
       $http.get('/criteria').success(function(response) {
         //update table
         $scope.criteria = response;
+        console.log($scope.criteria);
       })
   }
 

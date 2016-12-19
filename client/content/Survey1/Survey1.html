@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Survey 1</title>
+
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+
+    <!-- CSS Stylesheet -->
+    <link rel = 'stylesheet' type = 'text/css' href = '../../css/survey1.css' />
+
+    <!-- jQuery -->
+    <script type = 'text/javascript' src = '../../js/shared/jquery-3.1.0.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/jquery-ui-1.12.0/jquery-ui.js'></script>
+
+    <!-- AngularJS -->
+    <script src = '../../js/shared/angular.min.js'></script>
+
+    <!-- AngularJS Modules -->
+    <script src = '../../js/app.js'></script>
+
+    <!-- AngularJS Controllers -->
+    <script src = '../../js/controllers/Survey1/SurveyController.js'></script>
+
+    <!-- Bootstrap -->
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' />
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
+  </head>
+
+  <body ng-app = 'decisionSpace' ng-controller = 'SurveyController'>
+    <div class = 'container'>
+
+      <h1>Survey 1 - Smart Cities</h1>
+
+      <h2>Step 1: Select (and add) the attributes that you find relevant and their types</h2>
+      <div class = 'row'>
+        <table class = 'table'>
+          <thead>
+            <tr>
+              <th class = 'text-center'>Attribute Name</th>
+              <th class = 'text-center'>Attribute Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat = 'attribute in attributes'>
+              <td>
+                <input type = 'checkbox' value = {{attribute.name}} ng-checked = {{attribute.checked}} ng-click = 'updateAttrList(attribute.name)'>
+                {{attribute.name}}
+              </td>
+              <td>
+                <div ng-if = 'attribute.checked == 1'>
+                  <select class = 'form-control' ng-model = 'selectedType' ng-change = 'updateTypesList(attribute.name, selectedType)'>
+                    <option disabled selected value>-- Select A Type --</option>
+                    <option ng-selected = 'attribute.type == "Type 1"'>Type 1</option>
+                    <option ng-selected = 'attribute.type == "Type 2"'>Type 2</option>
+                    <option ng-selected = 'attribute.type == "Type 3"'>Type 3</option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'newAttribute.name'/>
+              </td>
+              <td>
+                <button class = 'btn btn-success' ng-click = 'addAttribute()'>Add Attribute</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Step 2: Propose classes of smart-city using the attributes of Step 1</h2>
+      <div class = 'row'>
+        <table class = 'table'>
+          <thead>
+            <tr>
+              <th class = 'text-center'>Class Name</th>
+              <th class = 'text-center'>Class Attributes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat = 'class in classes'>
+              <td>
+                {{class.name}}
+              </td>
+              <td>
+                <div ng-repeat = 'attr in attributes'>
+                  <input type = 'checkbox' value = {{attr.name}} ng-checked = 'classAttrChecked(class.name, attr.name)' ng-click = 'updateClassAttr(class.name, attr.name)'>
+                  {{attr.name}}
+                </div>
+              </td>
+              <td>
+                <button class = 'btn btn-danger' ng-click = 'deleteClass(class.name)'>Delete Class</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'newClass.name'/>
+              </td>
+              <td>
+                <button class = 'btn btn-success' ng-click = 'addClass()'>Add Class</button>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Step 3: Indicate which two cities you studied and which classes they belong to</h2>
+      <div class = 'row'>
+        <table class = 'table'>
+          <thead>
+            <tr>
+              <th class = 'text-center'>City Name</th>
+              <th class = 'text-center'>City Classes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat = 'city in cities'>
+              <td>
+                {{city.name}}
+              </td>
+              <td>
+                <div ng-repeat = 'class in classes'>
+                  <input type = 'checkbox' value = {{class.name}} ng-checked = 'cityClassChecked(city.name, class.name)' ng-click = 'updateCityClass(city.name, class.name)'>
+                  {{class.name}}
+                </div>
+              </td>
+              <td>
+                <button class = 'btn btn-danger' ng-click = 'deleteCity(city.name)'>Delete Class</button>
+              </td>
+            </tr>
+            <tr ng-if = 'enoughCities()'>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = '$parent.newCity'/>
+              </td>
+              <td>
+                <button class = 'btn btn-success' ng-click = 'addCity()'>Add City</button>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button class = 'btn btn-success' ng-click = 'submitAttributes()'>Submit</button>
+    </div>
+  </body>
+</html>

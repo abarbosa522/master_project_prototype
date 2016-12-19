@@ -226,7 +226,7 @@ app.delete('/CompleteCategories/:id', function(req, res) {
   });
 });
 
-//CredibilityDB functions
+//CredibilityCollection functions
 app.get('/CompleteCredibility', function(req, res) {
   db11.credibilitycollection.find(function(err, doc) {
     res.json(doc);
@@ -247,7 +247,7 @@ app.put('/CompleteCredibility/:id', function(req, res) {
     });
 });
 
-//ProfilePerformanceDB functions
+//ProfilePerformanceCollection functions
 app.get('/CompleteProfilesPerformance', function(req, res) {
   db12.profileperformancecollection.find(function(err, doc) {
     res.json(doc);
@@ -262,6 +262,29 @@ app.post('/CompleteProfilesPerformance', function(req, res) {
 
 app.delete('/CompleteProfilesPerformance', function(req, res) {
   db12.profileperformancecollection.remove(req.body, function(err, doc) {
+    res.json(doc);
+  });
+});
+
+//Smart Cities Survey 1
+var db13 = mongojs('mongodb://' + username + ':' + password + '@ds133388.mlab.com:33388/smartcitiessurvey1', ['attributescollection']);
+
+//AttributesCollection functions
+app.get('/Attributes', function(req, res) {
+  db13.attributescollection.find(function(err, doc) {
+    res.json(doc);
+  });
+});
+
+app.post('/Attributes', function(req, res) {
+  db13.attributescollection.insert(req.body, function(err, doc){
+    res.json(doc);
+  });
+});
+
+app.delete('/Attributes/:id', function(req, res) {
+  var id = req.params.id;
+  db13.attributescollection.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
     res.json(doc);
   });
 });
