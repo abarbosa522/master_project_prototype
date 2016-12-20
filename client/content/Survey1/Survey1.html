@@ -33,121 +33,163 @@
 
       <h1>Survey 1 - Smart Cities</h1>
 
-      <h2>Step 1: Select (and add) the attributes that you find relevant and their types</h2>
+      <h2>Step 1: Select (and add) the types of attributes that you find relevant</h2>
       <div class = 'row'>
         <table class = 'table'>
           <thead>
             <tr>
-              <th class = 'text-center'>Attribute Name</th>
-              <th class = 'text-center'>Attribute Type</th>
+              <th>Type Name</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat = 'attribute in attributes'>
+            <tr ng-repeat = 'type in types'>
               <td>
+                <input type = 'checkbox' value = {{type.name}} ng-checked = {{type.checked}} ng-click = 'updateTypesList(type.name)'>
+                {{type.name}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <form class = 'form-inline'>
+                  <input class = 'form-control' type = 'text' ng-model = 'newType.name' placeholder = "Add a Type"/>
+                  <button class = 'btn btn-success' ng-click = 'addType()'>
+                    <span class = 'glyphicon glyphicon-plus'></span>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Step 2: Select (and add) the attributes that you find relevant and their types</h2>
+      <div class = 'row'>
+        <table class = 'table'>
+          <thead>
+            <tr>
+              <th>Attribute Types</th>
+              <th>Attributes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td ng-repeat = 'attribute in attributes'>
                 <input type = 'checkbox' value = {{attribute.name}} ng-checked = {{attribute.checked}} ng-click = 'updateAttrList(attribute.name)'>
                 {{attribute.name}}
               </td>
-              <td>
-                <div ng-if = 'attribute.checked == 1'>
-                  <select class = 'form-control' ng-model = 'selectedType' ng-change = 'updateTypesList(attribute.name, selectedType)'>
-                    <option disabled selected value>-- Select A Type --</option>
-                    <option ng-selected = 'attribute.type == "Type 1"'>Type 1</option>
-                    <option ng-selected = 'attribute.type == "Type 2"'>Type 2</option>
-                    <option ng-selected = 'attribute.type == "Type 3"'>Type 3</option>
-                  </select>
-                </div>
-              </td>
+            </tr>
+            <tr ng-repeat = 'type in types' ng-if = 'type.checked == 1'>
+                <td>{{type.name}}</td>
+                <td ng-repeat = 'attribute in attributes'>
+                  <div ng-if = 'attribute.checked == 1'>
+                    <input type = 'radio' ng-checked = 'type.name == attribute.type' ng-click = 'updateAttrTypesList(attribute.name, type.name)'>
+                  </div>
+                </td>
             </tr>
             <tr>
-              <td>
-                <input class = 'form-control' type = 'text' ng-model = 'newAttribute.name'/>
+              <td ng-repeat = 'attribute in attributes'>
               </td>
               <td>
-                <button class = 'btn btn-success' ng-click = 'addAttribute()'>Add Attribute</button>
+                <form class = 'form-inline'>
+                  <input class = 'form-control' type = 'text' ng-model = 'newAttribute.name' placeholder = 'Add an Attribute'/>
+                  <button class = 'btn btn-success' ng-click = 'addAttribute()'>
+                    <span class = 'glyphicon glyphicon-plus'></span>
+                  </button>
+                </form>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h2>Step 2: Propose classes of smart-city using the attributes of Step 1</h2>
+
+      <h2>Step 3: Propose classes of smart-city using the attributes of Step 2</h2>
       <div class = 'row'>
         <table class = 'table'>
           <thead>
             <tr>
-              <th class = 'text-center'>Class Name</th>
-              <th class = 'text-center'>Class Attributes</th>
-              <th></th>
+              <th>Class Attributes</th>
+              <th>Classes</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat = 'class in classes'>
-              <td>
+            <tr>
+              <td></td>
+              <td ng-repeat = 'class in classes'>
                 {{class.name}}
               </td>
-              <td>
-                <div ng-repeat = 'attr in attributes'>
-                  <input type = 'checkbox' value = {{attr.name}} ng-checked = 'classAttrChecked(class.name, attr.name)' ng-click = 'updateClassAttr(class.name, attr.name)'>
-                  {{attr.name}}
-                </div>
-              </td>
-              <td>
-                <button class = 'btn btn-danger' ng-click = 'deleteClass(class.name)'>Delete Class</button>
+            </tr>
+            <tr ng-repeat = 'attribute in attributes' ng-if = 'attribute.checked == 1'>
+              <td>{{attribute.name}}</td>
+              <td ng-repeat = 'class in classes'>
+                <input type = 'checkbox' ng-checked = 'classAttrChecked(class.name, attribute.name)' ng-click = 'updateClassAttr(class.name, attribute.name)'>
               </td>
             </tr>
             <tr>
-              <td>
-                <input class = 'form-control' type = 'text' ng-model = 'newClass.name'/>
-              </td>
-              <td>
-                <button class = 'btn btn-success' ng-click = 'addClass()'>Add Class</button>
-              </td>
               <td></td>
+              <td ng-repeat = 'class in classes'>
+                <button class = 'btn btn-danger' ng-click = 'deleteClass(class.name)'>
+                  <span class = 'glyphicon glyphicon-remove'></span>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td ng-repeat = 'class in classes'></td>
+              <td>
+                <form class = 'form-inline'>
+                  <input class = 'form-control' type = 'text' ng-model = 'newClass.name' placeholder = "Add a Class"/>
+                  <button class = 'btn btn-success' ng-click = 'addClass()'>
+                    <span class = 'glyphicon glyphicon-plus'></span>
+                  </button>
+                </form>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h2>Step 3: Indicate which two cities you studied and which classes they belong to</h2>
+      <h2>Step 4: Indicate which two cities you studied and which classes they belong to</h2>
       <div class = 'row'>
         <table class = 'table'>
           <thead>
             <tr>
-              <th class = 'text-center'>City Name</th>
-              <th class = 'text-center'>City Classes</th>
-              <th></th>
+              <th>City Classes</th>
+              <th>Cities</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat = 'city in cities'>
-              <td>
+            <tr>
+              <td></td>
+              <td ng-repeat = 'city in cities'>
                 {{city.name}}
               </td>
-              <td>
-                <div ng-repeat = 'class in classes'>
-                  <input type = 'checkbox' value = {{class.name}} ng-checked = 'cityClassChecked(city.name, class.name)' ng-click = 'updateCityClass(city.name, class.name)'>
-                  {{class.name}}
-                </div>
-              </td>
-              <td>
-                <button class = 'btn btn-danger' ng-click = 'deleteCity(city.name)'>Delete Class</button>
-              </td>
             </tr>
-            <tr ng-if = 'enoughCities()'>
-              <td>
-                <input class = 'form-control' type = 'text' ng-model = '$parent.newCity'/>
+            <tr ng-repeat = 'class in classes'>
+              <td>{{class.name}}</td>
+              <td ng-repeat = 'city in cities'>
+                <input type = 'radio' ng-checked = 'cityClassChecked(city.name, class.name)' ng-click = 'updateCityClass(city.name, class.name)'>
               </td>
-              <td>
-                <button class = 'btn btn-success' ng-click = 'addCity()'>Add City</button>
-              </td>
-              <td></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <button class = 'btn btn-success' ng-click = 'submitAttributes()'>Submit</button>
+      <div class = 'buttonWrapper'>
+        <button class = 'btn btn-success' ng-click = 'submitForm(true)' >
+          <span class = 'glyphicon glyphicon-ok'></span>
+          Submit
+        </button>
+      </div>
+
+      <br>
+
+      <div class = 'alert alert-success' ng-if = 'showSuccessAlert'>
+        <strong>Success!</strong> Thank you for your collaboration!
+      </div>
+
+      <p><sub>If you need any help, just send a message to andre.dionisio.barbosa@ist.utl.pt</sub></p>
+
     </div>
   </body>
 </html>
