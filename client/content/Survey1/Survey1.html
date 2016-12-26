@@ -33,78 +33,51 @@
 
       <h1>Survey 1 - Smart Cities</h1>
 
-      <h2>Step 1: Select (and add) the types of attributes that you find relevant</h2>
-      <div class = 'row'>
-        <table class = 'table'>
-          <thead>
-            <tr>
-              <th>Type Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat = 'type in types'>
-              <td>
-                <input type = 'checkbox' value = {{type.name}} ng-checked = {{type.checked}} ng-click = 'updateTypesList(type.name)'>
-                {{type.name}}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <form class = 'form-inline'>
-                  <input class = 'form-control' type = 'text' ng-model = 'newType.name' placeholder = "Add a Type"/>
-                  <button class = 'btn btn-success' ng-click = 'addType()'>
-                    <span class = 'glyphicon glyphicon-plus'></span>
-                  </button>
-                </form>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <h2>Step 1: Check (and add) the types and attributes that you find relevant</h2>
 
-      <h2>Step 2: Select (and add) the attributes that you find relevant and their types</h2>
       <div class = 'row'>
         <table class = 'table'>
           <thead>
             <tr>
-              <th>Attribute Types</th>
               <th>Attributes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td></td>
-              <td ng-repeat = 'attribute in attributes'>
-                <input type = 'checkbox' value = {{attribute.name}} ng-checked = {{attribute.checked}} ng-click = 'updateAttrList(attribute.name)'>
-                {{attribute.name}}
-              </td>
-            </tr>
-            <tr ng-repeat = 'type in types' ng-if = 'type.checked == 1'>
-                <td>{{type.name}}</td>
-                <td ng-repeat = 'attribute in attributes'>
-                  <div ng-if = 'attribute.checked == 1'>
-                    <input type = 'radio' ng-checked = 'type.name == attribute.type' ng-click = 'updateAttrTypesList(attribute.name, type.name)'>
-                  </div>
-                </td>
+              <th>Types</th>
             </tr>
             <tr>
-              <td ng-repeat = 'attribute in attributes'>
-              </td>
               <td>
                 <form class = 'form-inline'>
-                  <input class = 'form-control' type = 'text' ng-model = 'newAttribute.name' placeholder = 'Add an Attribute'/>
+                  <input class = 'form-control' type = 'text' ng-model = 'newAttribute' placeholder = 'Add an Attribute'/>
                   <button class = 'btn btn-success' ng-click = 'addAttribute()'>
                     <span class = 'glyphicon glyphicon-plus'></span>
                   </button>
                 </form>
               </td>
+              <td>
+                <form class = 'form-inline'>
+                  <input class = 'form-control' type = 'text' ng-model = 'newType' placeholder = 'Add a Type'/>
+                  <button class = 'btn btn-success' ng-click = 'addType()'>
+                    <span class = 'glyphicon glyphicon-plus'></span>
+                  </button>
+                </form>
+              </td>
+          </thead>
+          <tbody>
+            <tr ng-repeat = 'attribute in attributes'>
+              <td>
+                <input type = 'checkbox' ng-checked = {{attribute.checked}} ng-click = 'updateAttrList(attribute.name)'>
+                {{attribute.name}}
+              </td>
+              <td ng-if = 'attribute.checked == 1'>
+                <div ng-repeat = 'type in types'>
+                  <input type = 'radio' ng-checked = 'type.name == attribute.type' ng-click = 'updateAttrTypesList(attribute.name, type.name)'>
+                  {{type.name}}
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-
-      <h2>Step 3: Propose classes of smart-city using the attributes of Step 2</h2>
+      <h2>Step 2: Indicate the classes to which smart cities may be assigned to</h2>
       <div class = 'row'>
         <table class = 'table'>
           <thead>
@@ -149,7 +122,7 @@
         </table>
       </div>
 
-      <h2>Step 4: Indicate which two cities you studied and which classes they belong to</h2>
+      <h2>Step 3: Assign the two smart cities that have been analysed by your group to one or more than one class indicated in</h2>
       <div class = 'row'>
         <table class = 'table'>
           <thead>

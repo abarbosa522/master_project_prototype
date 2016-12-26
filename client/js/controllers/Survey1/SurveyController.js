@@ -2,9 +2,43 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
   //typs to be shown, 0 if not checked and 1 otherwise
   var typesList = {'Type 1': 0, 'Type 2': 0, 'Type 3': 0};
   //attributes to be shown, 0 if not checked and 1 otherwise
-  var attributesList = {'Option 1':0, 'Option 2':0, 'Option 3':0};
+  var attributesList = {'Benefits':0, 'Citizens':0, 'Cognitive Design':0, 'Collaboration':0, 'Communication':0, 'Community':0,
+'Community - Smart Community':0, 'Creativity':0, 'Big Data':0, 'Big Data - Collecting':0, 'Data Analysis':0, 'Data Sharing':0,
+'Data - Real Time':0, 'Open Government Data':0, 'Open Data':0, 'Use of Data':0, 'Devices - Smart Devices and Agents':0,
+'Economy':0, 'Economic Changes':0, 'Economic Growth':0, 'Smart Economy':0, 'Education':0, 'Social Learning':0, 'Efficiency':0,
+'Environment Changes':0, 'Environment - Real Time Footprint':0, 'Environment - Smart':0, 'Transportation':0, 'Cost and Funding':0,
+'Funding - International':0, 'Funding - National':0, 'Globalization':0, 'Government - Smart Governance':0, 'Government':0,
+'Government - E-government':0, 'Government - Technocratic Governance':0, 'Health':0, 'Improved Decision Making':0, 'Infrastructure':0,
+'Infrastructure - Broadband':0, 'Infrastructure - Cloud Computing':0, 'Infrastructure - Human':0, 'Infrastructure - Institutional':0,
+'Infrastructure - Smart':0, 'Infrastructure - Technology':0, 'Inner and Outer Factors':0, 'Investigation':0, 'Investment':0,
+'IoT - Internet of Things':0, 'Living - Lifestyle':0, 'Living - Quality of Life':0, 'Living - Smart Living':0,
+'Management - City':0, 'Management - Energy':0, 'Management - Waste':0, 'Management - Water':0, 'Mobility - Smart':0,
+'Mobility - Transport Network':0, 'Mobility - Urban':0, 'Municipalities':0, 'Networking':0, 'Opportunities':0, 'Organization':0,
+'Policies':0, 'Pollution':0, 'Privacy':0, 'Productivity':0, 'Projects - Smart Projects':0, 'Replicable Model':0,
+'Resources':0, 'Resources - Renewable Energy':0, 'Resources - Resource Consumption':0, 'Security - Cyberattacks':0,
+'Security - Safety & Security':0, 'Security - Surveillance':0, 'Services - E-services':0, 'Services - Public Services':0,
+'Services - Social Services':0, 'Solutions - Smart Solutions':0, 'Stackholders - Actors':0, 'Strategy - Ecological Strategy':0,
+'Sustainability - Urban Development':0, 'System - Holistic View':0, 'System - Information System':0, 'System - Urban Information System':0,
+'Ubiquitous Computing':0, 'Urban Growth':0, 'Urban Population':0, 'Urbanism - Smart Urbanism':0, 'VANET - Security':0};
   //types of the attributes
-  var typesAttrList = {'Option 1':'', 'Option 2':'', 'Option 3':''};
+  var typesAttrList = {'Benefits':'', 'Citizens':'', 'Cognitive Design':'', 'Collaboration':'', 'Communication':'', 'Community':'',
+'Community - Smart Community':'', 'Creativity':'', 'Big Data':'', 'Big Data - Collecting':'', 'Data Analysis':'', 'Data Sharing':'',
+'Data - Real Time':'', 'Open Government Data':'', 'Open Data':'', 'Use of Data':'', 'Devices - Smart Devices and Agents':'',
+'Economy':'', 'Economic Changes':'', 'Economic Growth':'', 'Smart Economy':'', 'Education':'', 'Social Learning':'', 'Efficiency':'',
+'Environment Changes':'', 'Environment - Real Time Footprint':'', 'Environment - Smart':'', 'Transportation':'', 'Cost and Funding':'',
+'Funding - International':'', 'Funding - National':'', 'Globalization':'', 'Government - Smart Governance':'', 'Government':'',
+'Government - E-government':'', 'Government - Technocratic Governance':'', 'Health':'', 'Improved Decision Making':'', 'Infrastructure':'',
+'Infrastructure - Broadband':'', 'Infrastructure - Cloud Computing':'', 'Infrastructure - Human':'', 'Infrastructure - Institutional':'',
+'Infrastructure - Smart':'', 'Infrastructure - Technology':'', 'Inner and Outer Factors':'', 'Investigation':'', 'Investment':'',
+'IoT - Internet of Things':'', 'Living - Lifestyle':'', 'Living - Quality of Life':'', 'Living - Smart Living':'',
+'Management - City':'', 'Management - Energy':'', 'Management - Waste':'', 'Management - Water':'', 'Mobility - Smart':'',
+'Mobility - Transport Network':'', 'Mobility - Urban':'', 'Municipalities':'', 'Networking':'', 'Opportunities':'', 'Organization':'',
+'Policies':'', 'Pollution':'', 'Privacy':'', 'Productivity':'', 'Projects - Smart Projects':'', 'Replicable Model':'',
+'Resources':'', 'Resources - Renewable Energy':'', 'Resources - Resource Consumption':'', 'Security - Cyberattacks':'',
+'Security - Safety & Security':'', 'Security - Surveillance':'', 'Services - E-services':'', 'Services - Public Services':'',
+'Services - Social Services':'', 'Solutions - Smart Solutions':'', 'Stackholders - Actors':'', 'Strategy - Ecological Strategy':'',
+'Sustainability - Urban Development':'', 'System - Holistic View':'', 'System - Information System':'', 'System - Urban Information System':'',
+'Ubiquitous Computing':'', 'Urban Growth':'', 'Urban Population':'', 'Urbanism - Smart Urbanism':'', 'VANET - Security':''};
   //list of the classes and their attributes
   var classAttr = [];
   //list of the cities and their classes
@@ -133,10 +167,10 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
   //add a new type
   $scope.addType = function() {
     //new type is selected by default
-    typesList[$scope.newType.name] = 1;
+    typesList[$scope.newType] = 1;
 
     //clear the input text field
-    $scope.newType.name = '';
+    $scope.newType = '';
 
     //update $scope.types
     refreshTypes();
@@ -163,10 +197,10 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
   //add the new attribute given by the user
   $scope.addAttribute = function() {
     //the new attribute is selected by default
-    attributesList[$scope.newAttribute.name] = 1;
+    attributesList[$scope.newAttribute] = 1;
 
     //clear the input text field
-    $scope.newAttribute.name = '';
+    $scope.newAttribute = '';
 
     //update $scope.attributes
     refreshAttributes();
@@ -351,7 +385,7 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
     //post the new document
     $http.post('/Attributes', newObj).success(function(response) {
       documentId = response._id;
-      
+
       //show the success alert only when the submit button is pressed
       if(showSuccess)
         $scope.showSuccessAlert = true;
