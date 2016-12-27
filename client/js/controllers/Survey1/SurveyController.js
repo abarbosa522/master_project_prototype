@@ -1,44 +1,37 @@
 app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
-  //typs to be shown, 0 if not checked and 1 otherwise
+  //types to be shown, 0 if not checked and 1 otherwise
   var typesList = {'Type 1': 0, 'Type 2': 0, 'Type 3': 0};
+
   //attributes to be shown, 0 if not checked and 1 otherwise
-  var attributesList = {'Benefits':0, 'Citizens':0, 'Cognitive Design':0, 'Collaboration':0, 'Communication':0, 'Community':0,
-'Community - Smart Community':0, 'Creativity':0, 'Big Data':0, 'Big Data - Collecting':0, 'Data Analysis':0, 'Data Sharing':0,
-'Data - Real Time':0, 'Open Government Data':0, 'Open Data':0, 'Use of Data':0, 'Devices - Smart Devices and Agents':0,
-'Economy':0, 'Economic Changes':0, 'Economic Growth':0, 'Smart Economy':0, 'Education':0, 'Social Learning':0, 'Efficiency':0,
-'Environment Changes':0, 'Environment - Real Time Footprint':0, 'Environment - Smart':0, 'Transportation':0, 'Cost and Funding':0,
-'Funding - International':0, 'Funding - National':0, 'Globalization':0, 'Government - Smart Governance':0, 'Government':0,
-'Government - E-government':0, 'Government - Technocratic Governance':0, 'Health':0, 'Improved Decision Making':0, 'Infrastructure':0,
-'Infrastructure - Broadband':0, 'Infrastructure - Cloud Computing':0, 'Infrastructure - Human':0, 'Infrastructure - Institutional':0,
-'Infrastructure - Smart':0, 'Infrastructure - Technology':0, 'Inner and Outer Factors':0, 'Investigation':0, 'Investment':0,
-'IoT - Internet of Things':0, 'Living - Lifestyle':0, 'Living - Quality of Life':0, 'Living - Smart Living':0,
-'Management - City':0, 'Management - Energy':0, 'Management - Waste':0, 'Management - Water':0, 'Mobility - Smart':0,
-'Mobility - Transport Network':0, 'Mobility - Urban':0, 'Municipalities':0, 'Networking':0, 'Opportunities':0, 'Organization':0,
-'Policies':0, 'Pollution':0, 'Privacy':0, 'Productivity':0, 'Projects - Smart Projects':0, 'Replicable Model':0,
-'Resources':0, 'Resources - Renewable Energy':0, 'Resources - Resource Consumption':0, 'Security - Cyberattacks':0,
-'Security - Safety & Security':0, 'Security - Surveillance':0, 'Services - E-services':0, 'Services - Public Services':0,
-'Services - Social Services':0, 'Solutions - Smart Solutions':0, 'Stackholders - Actors':0, 'Strategy - Ecological Strategy':0,
-'Sustainability - Urban Development':0, 'System - Holistic View':0, 'System - Information System':0, 'System - Urban Information System':0,
-'Ubiquitous Computing':0, 'Urban Growth':0, 'Urban Population':0, 'Urbanism - Smart Urbanism':0, 'VANET - Security':0};
+  var attributesList = {'Agencies':0, 'Agents':0, 'Beneficts':0, 'Big Data':0, 'Broadband Infrastructure':0, 'Citizens':0,
+  'Cloud Infrastructure':0, 'Cognitive Design':0, 'Collaboration':0, 'Communication':0, 'Community':0, 'Creativity':0,
+  'Cybersecurity':0, 'Data Analysis':0, 'Data Collecting':0, 'Data Reuse':0, 'Data Sharing':0, 'Decision Making':0, 'Economy':0,
+  'Education':0, 'Efficiency':0, 'Energy':0, 'Environmental Changes':0, 'Environmental Footprint':0, 'Funding':0, 'Globalization':0,
+  'Health':0, 'Human Infrastructure':0, 'Information System':0, 'Inner and Outer Factors':0, 'Innovation':0,
+  'Institutional Infrastructure':0, 'International':0, 'Internet of Things (IoT)':0, 'Investment':0, 'Local':0, 'Managers':0,
+  'Mobility':0, 'Municipalities':0, 'National':0, 'Open Data':0, 'Open Government':0, 'Open Government Data':0, 'Operationals':0,
+  'Opportunities':0, 'Organization':0, 'Policies':0, 'Politicians':0, 'Pollution':0, 'Privacy':0, 'Private Sector':0,
+  'Productivity':0, 'Projects':0, 'Public Services':0, 'Quality of Life':0, 'Real Time':0, 'Renewable Energy':0, 'Replicable Models':0,
+  'Research and Development (R&D)':0, 'Resources':0, 'Safety':0, 'Security':0, 'Sensor Devices':0, 'Sensors':0, 'Services':0,
+  'Smart':0, 'Social Learning':0, 'Solutions':0, 'Strategy':0, 'Surveillance':0, 'Sustainability':0, 'Systemic Holistic View':0,
+  'Technocratic':0, 'Transport Network':0, 'Ubiquitous Computing':0, 'Urban Growth':0, 'Urban Population':0, 'Urbanism':0,
+  'Value':0, 'Waste':0, 'Water':0, 'Wireless Ad Hoc Networks (WANET, ...)':0, 'Wireless Sensor Networks (WSN)':0};
+
   //types of the attributes
-  var typesAttrList = {'Benefits':'', 'Citizens':'', 'Cognitive Design':'', 'Collaboration':'', 'Communication':'', 'Community':'',
-'Community - Smart Community':'', 'Creativity':'', 'Big Data':'', 'Big Data - Collecting':'', 'Data Analysis':'', 'Data Sharing':'',
-'Data - Real Time':'', 'Open Government Data':'', 'Open Data':'', 'Use of Data':'', 'Devices - Smart Devices and Agents':'',
-'Economy':'', 'Economic Changes':'', 'Economic Growth':'', 'Smart Economy':'', 'Education':'', 'Social Learning':'', 'Efficiency':'',
-'Environment Changes':'', 'Environment - Real Time Footprint':'', 'Environment - Smart':'', 'Transportation':'', 'Cost and Funding':'',
-'Funding - International':'', 'Funding - National':'', 'Globalization':'', 'Government - Smart Governance':'', 'Government':'',
-'Government - E-government':'', 'Government - Technocratic Governance':'', 'Health':'', 'Improved Decision Making':'', 'Infrastructure':'',
-'Infrastructure - Broadband':'', 'Infrastructure - Cloud Computing':'', 'Infrastructure - Human':'', 'Infrastructure - Institutional':'',
-'Infrastructure - Smart':'', 'Infrastructure - Technology':'', 'Inner and Outer Factors':'', 'Investigation':'', 'Investment':'',
-'IoT - Internet of Things':'', 'Living - Lifestyle':'', 'Living - Quality of Life':'', 'Living - Smart Living':'',
-'Management - City':'', 'Management - Energy':'', 'Management - Waste':'', 'Management - Water':'', 'Mobility - Smart':'',
-'Mobility - Transport Network':'', 'Mobility - Urban':'', 'Municipalities':'', 'Networking':'', 'Opportunities':'', 'Organization':'',
-'Policies':'', 'Pollution':'', 'Privacy':'', 'Productivity':'', 'Projects - Smart Projects':'', 'Replicable Model':'',
-'Resources':'', 'Resources - Renewable Energy':'', 'Resources - Resource Consumption':'', 'Security - Cyberattacks':'',
-'Security - Safety & Security':'', 'Security - Surveillance':'', 'Services - E-services':'', 'Services - Public Services':'',
-'Services - Social Services':'', 'Solutions - Smart Solutions':'', 'Stackholders - Actors':'', 'Strategy - Ecological Strategy':'',
-'Sustainability - Urban Development':'', 'System - Holistic View':'', 'System - Information System':'', 'System - Urban Information System':'',
-'Ubiquitous Computing':'', 'Urban Growth':'', 'Urban Population':'', 'Urbanism - Smart Urbanism':'', 'VANET - Security':''};
+  var typesAttrList = {'Agencies':'', 'Agents':'', 'Beneficts':'', 'Big Data':'', 'Broadband Infrastructure':'', 'Citizens':'',
+  'Cloud Infrastructure':'', 'Cognitive Design':'', 'Collaboration':'', 'Communication':'', 'Community':'', 'Creativity':'',
+  'Cybersecurity':'', 'Data Analysis':'', 'Data Collecting':'', 'Data Reuse':'', 'Data Sharing':'', 'Decision Making':'', 'Economy':'',
+  'Education':'', 'Efficiency':'', 'Energy':'', 'Environmental Changes':'', 'Environmental Footprint':'', 'Funding':'', 'Globalization':'',
+  'Health':'', 'Human Infrastructure':'', 'Information System':'', 'Inner and Outer Factors':'', 'Innovation':'',
+  'Institutional Infrastructure':'', 'International':'', 'Internet of Things (IoT)':'', 'Investment':'', 'Local':'', 'Managers':'',
+  'Mobility':'', 'Municipalities':'', 'National':'', 'Open Data':'', 'Open Government':'', 'Open Government Data':'', 'Operationals':'',
+  'Opportunities':'', 'Organization':'', 'Policies':'', 'Politicians':'', 'Pollution':'', 'Privacy':'', 'Private Sector':'',
+  'Productivity':'', 'Projects':'', 'Public Services':'', 'Quality of Life':'', 'Real Time':'', 'Renewable Energy':'', 'Replicable Models':'',
+  'Research and Development (R&D)':'', 'Resources':'', 'Safety':'', 'Security':'', 'Sensor Devices':'', 'Sensors':'', 'Services':'',
+  'Smart':'', 'Social Learning':'', 'Solutions':'', 'Strategy':'', 'Surveillance':'', 'Sustainability':'', 'Systemic Holistic View':'',
+  'Technocratic':'', 'Transport Network':'', 'Ubiquitous Computing':'', 'Urban Growth':'', 'Urban Population':'', 'Urbanism':'',
+  'Value':'', 'Waste':'', 'Water':'', 'Wireless Ad Hoc Networks (WANET, ...)':'', 'Wireless Sensor Networks (WSN)':''};
+
   //list of the classes and their attributes
   var classAttr = [];
   //list of the cities and their classes
@@ -194,6 +187,26 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
     $scope.submitForm(false);
   }
 
+  //delete a type
+  $scope.deleteType = function(typeName) {
+    //find and remove the type from the typesList
+    for(type in typesList)
+      if(type == typeName)
+        delete typesList[type];
+
+    //find and remove the type from the list of attribute-type
+    for(attr in typesAttrList)
+      if(typesAttrList[attr] == typeName)
+        typesAttrList[attr] = '';
+
+    //update the $scope.types and $scope.attributes
+    refreshTypes();
+    refreshAttributes();
+
+    //submit the new changes and don't show the success alert
+    $scope.submitForm(false);
+  }
+
   //add the new attribute given by the user
   $scope.addAttribute = function() {
     //the new attribute is selected by default
@@ -237,10 +250,10 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
 
   //add the new class given by the user
   $scope.addClass = function() {
-    classAttr.push([$scope.newClass.name, []]);
+    classAttr.push([$scope.newClass, []]);
 
     //clear the text input field
-    $scope.newClass.name = '';
+    $scope.newClass = '';
 
     //update $scope.classes
     refreshClasses();

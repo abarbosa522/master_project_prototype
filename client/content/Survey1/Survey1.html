@@ -39,11 +39,7 @@
         <table class = 'table'>
           <thead>
             <tr>
-              <th>Attributes</th>
-              <th>Types</th>
-            </tr>
-            <tr>
-              <td>
+              <td class = 'col-md-3'>
                 <form class = 'form-inline'>
                   <input class = 'form-control' type = 'text' ng-model = 'newAttribute' placeholder = 'Add an Attribute'/>
                   <button class = 'btn btn-success' ng-click = 'addAttribute()'>
@@ -59,30 +55,79 @@
                   </button>
                 </form>
               </td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover table-condensed'>
+          <thead>
+            <tr>
+              <th class = 'col-md-3'>Attributes</th>
+              <th>Types</th>
+            </tr>
           </thead>
           <tbody>
+            <tr>
+              <td></td>
+              <td ng-repeat = 'type in types'>
+                {{type.name}}
+              </td>
+            </tr>
             <tr ng-repeat = 'attribute in attributes'>
               <td>
                 <input type = 'checkbox' ng-checked = {{attribute.checked}} ng-click = 'updateAttrList(attribute.name)'>
                 {{attribute.name}}
               </td>
-              <td ng-if = 'attribute.checked == 1'>
-                <div ng-repeat = 'type in types'>
-                  <input type = 'radio' ng-checked = 'type.name == attribute.type' ng-click = 'updateAttrTypesList(attribute.name, type.name)'>
-                  {{type.name}}
-                </div>
+              <td ng-repeat = 'type in types'>
+                <input type = 'radio' ng-checked = 'type.name == attribute.type' ng-click = 'updateAttrTypesList(attribute.name, type.name)'>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h2>Step 2: Indicate the classes to which smart cities may be assigned to</h2>
       <div class = 'row'>
         <table class = 'table'>
           <thead>
             <tr>
-              <th>Class Attributes</th>
+              <td class = 'col-md-3'></td>
+              <td ng-repeat = 'type in types'>
+                <button class = 'btn btn-danger' ng-click = 'deleteType(type.name)'>
+                  <span class = 'glyphicon glyphicon-remove'></span>
+                </button>
+              </td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+      <h2>Step 2: Indicate the classes to which smart cities may be assigned to</h2>
+
+      <div class = 'row'>
+        <table class = 'table'>
+          <thead>
+            <tr>
+              <td class = 'col-md-3'></td>
+              <td>
+                <form class = 'form-inline'>
+                  <input class = 'form-control' type = 'text' ng-model = 'newClass' placeholder = "Add a Class"/>
+                  <button class = 'btn btn-success' ng-click = 'addClass()'>
+                    <span class = 'glyphicon glyphicon-plus'></span>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover'>
+          <thead>
+            <tr>
+              <th class = 'col-md-3'>Class Attributes</th>
               <th>Classes</th>
             </tr>
           </thead>
@@ -99,32 +144,28 @@
                 <input type = 'checkbox' ng-checked = 'classAttrChecked(class.name, attribute.name)' ng-click = 'updateClassAttr(class.name, attribute.name)'>
               </td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class = 'row'>
+        <table class = 'table'>
+          <thead>
             <tr>
-              <td></td>
+              <td class = 'col-md-3'></td>
               <td ng-repeat = 'class in classes'>
                 <button class = 'btn btn-danger' ng-click = 'deleteClass(class.name)'>
                   <span class = 'glyphicon glyphicon-remove'></span>
                 </button>
               </td>
             </tr>
-            <tr>
-              <td ng-repeat = 'class in classes'></td>
-              <td>
-                <form class = 'form-inline'>
-                  <input class = 'form-control' type = 'text' ng-model = 'newClass.name' placeholder = "Add a Class"/>
-                  <button class = 'btn btn-success' ng-click = 'addClass()'>
-                    <span class = 'glyphicon glyphicon-plus'></span>
-                  </button>
-                </form>
-              </td>
-            </tr>
-          </tbody>
+          </thead>
         </table>
       </div>
 
       <h2>Step 3: Assign the two smart cities that have been analysed by your group to one or more than one class indicated in</h2>
       <div class = 'row'>
-        <table class = 'table'>
+        <table class = 'table table-bordered table-striped table-hover'>
           <thead>
             <tr>
               <th>City Classes</th>
