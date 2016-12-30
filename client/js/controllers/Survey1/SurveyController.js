@@ -22,6 +22,9 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
   //attributes of each city - index 0 contains the attributes of cities[0], ...
   var cityAttr = [[], []];
 
+  //selected attributes
+  var selectedAttr = [];
+
   //id of the document that contains the attributes the current user
   var documentId = '';
 
@@ -36,6 +39,9 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
 
   //update the list of attributes
   function refreshAttributes() {
+    //sort the attributes alphabetically
+    attrList.sort();
+
     //all attributes
     var attributesText = '[';
 
@@ -48,6 +54,25 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
     attributesText += ']';
 
     $scope.attributes = JSON.parse(attributesText);
+  }
+
+  //update the list of selected attributes
+  function refreshSelectedAttributes() {
+    //sort the selected attributes alphabetically
+    selectedAttr.sort();
+
+    var selectedAttrText = '[';
+
+    for(i = 0; i < selectedAttr.length; i++)
+      selectedAttrText += '{"name":"' + selectedAttr[i] + '"},';
+
+    if(selectedAttrText[selectedAttrText.length - 1] == ',')
+      selectedAttrText = selectedAttrText.substring(0, selectedAttrText.length - 1);
+
+    selectedAttrText += ']';
+
+    $scope.selectedAttributes = JSON.parse(selectedAttrText);
+
   }
 
   //update the list of cities
@@ -75,6 +100,9 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
           //get the id of the document
           documentId = response[i]._id;
 
+          //get the user's number
+          $scope.number = response[i].number;
+
           //get the cities
           for(j = 0; j < response[i].cities.length; j++) {
 
@@ -96,6 +124,7 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
       }
       refreshAttributes();
       refreshCities();
+      updateSelectedAttributes();
     });
   }
 
@@ -134,6 +163,65 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
     //the attribute is in the array and the user wants to remove it
     else
       cityAttr[cityIndex].splice(attributeIndex, 1);
+
+    var selectedAttrSum = 0;
+
+    //check if the attribute is selected in any of the cities
+    for(i = 0; i < cityAttr.length; i++)
+      if(cityAttr[i].indexOf(attributeName) != -1)
+        selectedAttrSum++;
+
+    //check if the attribute was in the selected attributes list
+    var selectedAttrIndex = selectedAttr.indexOf(attributeName);
+
+    if(selectedAttrSum > 0 && selectedAttrIndex == -1)
+      selectedAttr.push(attributeName);
+    else if(selectedAttrSum == 0 && selectedAttrIndex > -1)
+      selectedAttr.splice(selectedAttrIndex, 1);
+
+    refreshSelectedAttributes();
+  }
+
+  $scope.defineTdStyle = function(selectedAttrName, cityName) {
+    if(cityAttr[cities.indexOf(cityName)].indexOf(selectedAttrName) != -1) {
+      return {
+        "background-color":"#5cb85c"
+      };
+    }
+    else {
+      return {
+        "background-color":"none"
+      };
+    }
+  }
+
+  $scope.attributeSelected = function(selectedAttrName, cityName) {
+    if(cityAttr[cities.indexOf(cityName)].indexOf(selectedAttrName) != -1)
+      return true;
+    else
+      return false;
+  }
+
+  function updateSelectedAttributes() {
+    for(i = 0; i < attrList.length; i++) {
+
+      var selectedAttrSum = 0;
+
+      //check if the attribute is selected in any of the cities
+      for(j = 0; j < cityAttr.length; j++)
+        if(cityAttr[j].indexOf(attrList[i]) != -1)
+          selectedAttrSum++;
+
+      //check if the attribute was in the selected attributes list
+      var selectedAttrIndex = selectedAttr.indexOf(attrList[i]);
+
+      if(selectedAttrSum > 0 && selectedAttrIndex == -1)
+        selectedAttr.push(attrList[i]);
+      else if(selectedAttrSum == 0 && selectedAttrIndex > -1)
+        selectedAttr.splice(selectedAttrIndex, 1);
+    }
+
+    refreshSelectedAttributes();
   }
 
   $scope.submitForm = function(showSuccess) {
@@ -200,8 +288,11 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
     'Transport Network', 'Ubiquitous Computing', 'Urban Growth', 'Urban Population', 'Urbanism', 'Value', 'Waste', 'Water',
     'Wireless Ad Hoc Networks (WANET, ...)', 'Wireless Sensor Networks (WSN)'];
 
+    selectedAttr = [];
+
     refreshAttributes();
     refreshCities();
+    updateSelectedAttributes();
   }
 
   $scope.reloadData = function() {
@@ -219,6 +310,8 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
     'Smart', 'Social Learning', 'Solutions', 'Strategy', 'Surveillance', 'Sustainability', 'Systemic Holistic View', 'Technocratic',
     'Transport Network', 'Ubiquitous Computing', 'Urban Growth', 'Urban Population', 'Urbanism', 'Value', 'Waste', 'Water',
     'Wireless Ad Hoc Networks (WANET, ...)', 'Wireless Sensor Networks (WSN)'];
+
+    selectedAttr = [];
 
     getPreviousDoc();
   }

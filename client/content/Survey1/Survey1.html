@@ -31,9 +31,13 @@
   <body ng-app = 'decisionSpace' ng-controller = 'SurveyController'>
     <div class = 'container'>
 
-      <h1>Survey 1 - Smart Cities</h1>
+      <div class = 'page-header'>
+        <h1>Survey - Smart Cities</h1>
 
-      <h2>For each smartcity (that you studied), select the attributes that characterizes it the best.</h2>
+        <p class = 'text-uppercase'>Welcome <strong>{{number}}</strong>!</p>
+      </div>
+
+      <h3>For each smartcity (that you studied), select (and add) the attributes that characterize it better.</h3>
 
       <div class = 'row'>
         <table class = 'table'>
@@ -56,8 +60,9 @@
         <table class = 'table table-bordered table-striped table-hover table-condensed tableCenter'>
           <thead>
             <tr>
-              <th class = 'col-md-3 text-center'>Attributes</th>
-              <th class = 'text-center'>Cities</th>
+              <th class = 'col-md-4 text-center success'>Attributes</th>
+              <th class = 'col-md-4 text-center success'>Cities</th>
+              <th class = 'col-md-4 success'></th>
             </tr>
           </thead>
           <tbody>
@@ -71,6 +76,34 @@
               <td>{{attribute.name}}</td>
               <td ng-repeat = 'city in cities'>
                 <input type = 'checkbox' ng-checked = 'checkCityAttr(attribute.name, city.name)' ng-click = 'updateCityAttr(attribute.name, city.name)'>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover table-condensed tableCenter'>
+          <thead>
+            <tr>
+              <th class = 'text-center' style="visibility:hidden;"></th>
+              <th class = 'col-md-4 text-center success'>Cities</th>
+              <th class = 'col-md-4 success'></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="visibility:hidden;"></td>
+              <td ng-repeat = 'city in cities'>
+                {{city.name}}
+              </td>
+            </tr>
+            <tr ng-repeat = 'selectedAttr in selectedAttributes'>
+              <td style="visibility:hidden;"></td>
+              <td ng-repeat = 'city in cities' ng-style = 'defineTdStyle(selectedAttr.name, city.name)'>
+                <div ng-if = 'attributeSelected(selectedAttr.name, city.name)'>
+                  {{selectedAttr.name}}
+                </div>
               </td>
             </tr>
           </tbody>
