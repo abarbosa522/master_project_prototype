@@ -33,7 +33,7 @@
 
       <h1>Survey 1 - Smart Cities</h1>
 
-      <h2>Step 1: Check (and add) the classes and attributes that you find relevant</h2>
+      <h2>For each smartcity (that you studied), select the attributes that characterizes it the best.</h2>
 
       <div class = 'row'>
         <table class = 'table'>
@@ -57,59 +57,20 @@
           <thead>
             <tr>
               <th class = 'col-md-3 text-center'>Attributes</th>
-              <th class = 'text-center'>Classes</th>
+              <th class = 'text-center'>Cities</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td></td>
-              <td ng-repeat = 'type in types'>
-                {{type.name}}
-
-                <button class = 'btn btn-danger btn-xs delete-btn' ng-click = 'deleteType(type.name)'>
-                  <span class = 'glyphicon glyphicon-remove'></span>
-                </button>
-              </td>
-              <td class = 'col-md-3'>
-                <form class = 'form-inline'>
-                  <input class = 'form-control' type = 'text' ng-model = 'newType' placeholder = 'Add a Class'/>
-                  <button class = 'btn btn-success' ng-click = 'addType()'>
-                    <span class = 'glyphicon glyphicon-plus'></span>
-                  </button>
-                </form>
+              <td ng-repeat = 'city in cities'>
+                {{city.name}}
               </td>
             </tr>
             <tr ng-repeat = 'attribute in attributes'>
               <td>{{attribute.name}}</td>
-              <td ng-repeat = 'type in types'>
-                <input type = 'radio' ng-checked = 'type.name == attribute.type' ng-click = 'updateAttrTypesList(attribute.name, type.name)'>
-              </td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h2>Step 2: Assign the two smart cities that have been analysed by your group to one or more than one class</h2>
-      <div class = 'row'>
-        <table class = 'table table-bordered table-striped table-hover tableCenter'>
-          <thead>
-            <tr>
-              <th class = 'col-md-3 text-center'>Cities</th>
-              <th class = 'text-center'>Classes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td></td>
-              <td ng-repeat = 'type in types'>
-                {{type.name}}
-              </td>
-            </tr>
-            <tr ng-repeat = 'city in cities'>
-              <td>{{city.name}}</td>
-              <td ng-repeat = 'type in types'>
-                <input type = 'radio' ng-checked = 'cityClassChecked(city.name, type.name)' ng-click = 'updateCityClass(city.name, type.name)'>
+              <td ng-repeat = 'city in cities'>
+                <input type = 'checkbox' ng-checked = 'checkCityAttr(attribute.name, city.name)' ng-click = 'updateCityAttr(attribute.name, city.name)'>
               </td>
             </tr>
           </tbody>
@@ -127,7 +88,7 @@
           Reset
         </button>
 
-        <button class = 'btn btn-info' ng-click = 'reload()' >
+        <button class = 'btn btn-info' ng-click = 'reloadData()' >
           <span class = 'glyphicon glyphicon-refresh'></span>
           Reload
         </button>

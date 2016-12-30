@@ -2,23 +2,25 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
   //list of types
   var typesList = [];
 
-  //types of the attributes
-  var typesAttrList = {'Agencies':'', 'Agents':'', 'Beneficts':'', 'Big Data':'', 'Broadband Infrastructure':'', 'Citizens':'',
-  'Cloud Infrastructure':'', 'Cognitive Design':'', 'Collaboration':'', 'Communication':'', 'Community':'', 'Creativity':'',
-  'Cybersecurity':'', 'Data Analysis':'', 'Data Collecting':'', 'Data Reuse':'', 'Data Sharing':'', 'Decision Making':'', 'Economy':'',
-  'Education':'', 'Efficiency':'', 'Energy':'', 'Environmental Changes':'', 'Environmental Footprint':'', 'Funding':'', 'Globalization':'',
-  'Health':'', 'Human Infrastructure':'', 'Information System':'', 'Inner and Outer Factors':'', 'Innovation':'',
-  'Institutional Infrastructure':'', 'International':'', 'Internet of Things (IoT)':'', 'Investment':'', 'Local':'', 'Managers':'',
-  'Mobility':'', 'Municipalities':'', 'National':'', 'Open Data':'', 'Open Government':'', 'Open Government Data':'', 'Operationals':'',
-  'Opportunities':'', 'Organization':'', 'Policies':'', 'Politicians':'', 'Pollution':'', 'Privacy':'', 'Private Sector':'',
-  'Productivity':'', 'Projects':'', 'Public Services':'', 'Quality of Life':'', 'Real Time':'', 'Renewable Energy':'', 'Replicable Models':'',
-  'Research and Development (R&D)':'', 'Resources':'', 'Safety':'', 'Security':'', 'Sensor Devices':'', 'Sensors':'', 'Services':'',
-  'Smart':'', 'Social Learning':'', 'Solutions':'', 'Strategy':'', 'Surveillance':'', 'Sustainability':'', 'Systemic Holistic View':'',
-  'Technocratic':'', 'Transport Network':'', 'Ubiquitous Computing':'', 'Urban Growth':'', 'Urban Population':'', 'Urbanism':'',
-  'Value':'', 'Waste':'', 'Water':'', 'Wireless Ad Hoc Networks (WANET, ...)':'', 'Wireless Sensor Networks (WSN)':''};
+  //list of attributes
+  var attrList = ['Agencies', 'Agents', 'Beneficts', 'Big Data', 'Broadband Infrastructure', 'Citizens', 'Cloud Infrastructure',
+  'Cognitive Design', 'Collaboration', 'Communication', 'Community', 'Creativity', 'Cybersecurity', 'Data Analysis',
+  'Data Collecting', 'Data Reuse', 'Data Sharing', 'Decision Making', 'Economy', 'Education', 'Efficiency', 'Energy',
+  'Environmental Changes', 'Environmental Footprint', 'Funding', 'Globalization', 'Health', 'Human Infrastructure',
+  'Information System', 'Inner and Outer Factors', 'Innovation', 'Institutional Infrastructure', 'International',
+  'Internet of Things (IoT)', 'Investment', 'Local', 'Managers', 'Mobility', 'Municipalities', 'National', 'Open Data',
+  'Open Government', 'Open Government Data', 'Operationals', 'Opportunities', 'Organization', 'Policies', 'Politicians', 'Pollution',
+  'Privacy', 'Private Sector', 'Productivity', 'Projects', 'Public Services', 'Quality of Life', 'Real Time', 'Renewable Energy',
+  'Replicable Models', 'Research and Development (R&D)', 'Resources', 'Safety', 'Security', 'Sensor Devices', 'Sensors', 'Services',
+  'Smart', 'Social Learning', 'Solutions', 'Strategy', 'Surveillance', 'Sustainability', 'Systemic Holistic View', 'Technocratic',
+  'Transport Network', 'Ubiquitous Computing', 'Urban Growth', 'Urban Population', 'Urbanism', 'Value', 'Waste', 'Water',
+  'Wireless Ad Hoc Networks (WANET, ...)', 'Wireless Sensor Networks (WSN)'];
 
-  //list of the cities and their classes
-  var cityClass = {};
+  //list of cities
+  var cities = [];
+
+  //attributes of each city - index 0 contains the attributes of cities[0], ...
+  var cityAttr = [[], []];
 
   //id of the document that contains the attributes the current user
   var documentId = '';
@@ -32,32 +34,13 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
     key = url.substr(url.indexOf('?') + 1);
   }
 
-  //update the list of types
-  function refreshTypes() {
-    var typesText = '[';
-
-    //convert types to one JSON string
-    for(i = 0; i < typesList.length; i++)
-      typesText += '{"name":"' + typesList[i] + '"},';
-
-    //remove the last comma, if it is there
-    if(typesText[typesText.length - 1] == ',')
-      typesText = typesText.substring(0, typesText.length - 1);
-
-    //terminate JSON string
-    typesText += ']';
-
-    //convert it to JSON object
-    $scope.types = JSON.parse(typesText);
-  }
-
   //update the list of attributes
   function refreshAttributes() {
     //all attributes
     var attributesText = '[';
 
-    for(attr in typesAttrList)
-      attributesText += '{"name":"' + attr + '","type":"' + typesAttrList[attr] + '"},';
+    for(i = 0; i < attrList.length; i++)
+      attributesText += '{"name":"' + attrList[i] + '"},';
 
     if(attributesText[attributesText.length - 1] == ',')
       attributesText = attributesText.substring(0, attributesText.length - 1);
@@ -71,8 +54,8 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
   function refreshCities() {
     var citiesText = '[';
 
-    for(city in cityClass)
-      citiesText += '{"name":"' + city + '","class":"' + cityClass[city] + '"},';
+    for(i = 0; i < cities.length; i++)
+      citiesText += '{"name":"' + cities[i] + '"},';
 
     if(citiesText[citiesText.length - 1] == ',')
       citiesText = citiesText.substring(0, citiesText.length - 1);
@@ -92,108 +75,65 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
           //get the id of the document
           documentId = response[i]._id;
 
-          //get the types
-          for(j = 0; j < response[i].types.length; j++)
-              typesList.push(response[i].types[j]);
-
-          //get the attributes and corresponding types
-          for(j = 0; j < response[i].attributes.length; j++)
-            typesAttrList[response[i].attributes[j].name] = response[i].attributes[j].type;
-
           //get the cities
-          for(j = 0; j < response[i].cities.length; j++)
-            cityClass[response[i].cities[j].name] = response[i].cities[j].class;
+          for(j = 0; j < response[i].cities.length; j++) {
 
+            if(cities.indexOf(response[i].cities[j].name) == -1)
+              cities.push(response[i].cities[j].name);
+
+            for(k = 0; k < response[i].cities[j].attributes.length; k++) {
+              //check if the user added any other attribute
+              var attrIndex = attrList.indexOf(response[i].cities[j].attributes[k].name);
+
+              if(attrIndex == -1)
+                attrList.push(response[i].cities[j].attributes[k].name);
+
+              //associate the attribute to the city
+              cityAttr[j].push(response[i].cities[j].attributes[k].name);
+            }
+          }
         }
       }
-      refreshTypes();
       refreshAttributes();
       refreshCities();
     });
-  }
-
-  //add a new type
-  $scope.addType = function() {
-    //new type is selected by default
-    typesList.push($scope.newType);
-
-    //clear the input text field
-    $scope.newType = '';
-
-    //update $scope.types
-    refreshTypes();
-
-    //submit the new changes and don't show the success alert
-    //$scope.submitForm(false);
-  }
-
-  //delete a type
-  $scope.deleteType = function(typeName) {
-    //find and remove the type from the typesList
-    var index = typesList.indexOf(typeName);
-
-    if(index > -1)
-      typesList.splice(index, 1);
-
-    //find and remove the type from the list of attribute-type
-    for(i = 0; i < typesAttrList.length; i++)
-      if(typesAttrList[i] == typeName)
-        typesAttrList[i] = '';
-
-    //update the $scope.types and $scope.attributes
-    refreshTypes();
-    refreshAttributes();
-
-    //submit the new changes and don't show the success alert
-    //$scope.submitForm(false);
   }
 
   //add the new attribute given by the user
   $scope.addAttribute = function() {
     var newAttr = $scope.newAttribute;
 
-    //the new attribute doesn't have a corresponding class by default
-    typesAttrList[$scope.newAttribute] = '';
+    attrList.push($scope.newAttribute);
 
     //clear the input text field
     $scope.newAttribute = '';
 
     //update $scope.attributes
     refreshAttributes();
-
-    //submit the new changes and don't show the success alert
-    //$scope.submitForm(false);
   }
 
-  //update the list of types of an attribute
-  $scope.updateAttrTypesList = function(attrName, typeName) {
-    typesAttrList[attrName] = typeName;
+  //check if attribute is associated to the city
+  $scope.checkCityAttr = function(attributeName, cityName) {
+    var cityIndex = cities.indexOf(cityName);
+    var attributeIndex = cityAttr[cityIndex].indexOf(attributeName);
 
-    //update $scope.attributes
-    refreshAttributes();
-
-    //submit the new changes and don't show the success alert
-    //$scope.submitForm(false);
-  }
-
-  //find if the class is the city's value
-  //city is the key, class is the value
-  $scope.cityClassChecked = function(cityName, typeName) {
-    if(cityClass[cityName] == typeName)
+    if(attributeIndex > -1)
       return true;
     else
       return false;
   }
 
-  //update the list of the selected class of a city
-  $scope.updateCityClass = function(cityName, typeName) {
-    cityClass[cityName] = typeName;
+  $scope.updateCityAttr = function(attributeName, cityName) {
+    var cityIndex = cities.indexOf(cityName);
 
-    //update $scope.cities
-    refreshCities();
+    var attributeIndex = cityAttr[cityIndex].indexOf(attributeName);
 
-    //submit the new changes and don't show the success alert
-    //$scope.submitForm(false);
+    //the attribute isn't in the array and the user wants to add it
+    if(attributeIndex == -1)
+      cityAttr[cityIndex].push(attributeName);
+    //the attribute is in the array and the user wants to remove it
+    else
+      cityAttr[cityIndex].splice(attributeIndex, 1);
   }
 
   $scope.submitForm = function(showSuccess) {
@@ -213,31 +153,19 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
   //compose the json object and submit the form
   function postDoc(showSuccess) {
     //add the user's key and the types
-    var newDoc = '{"key":"' + key + '", "types":[';
+    var newDoc = '{"key":"' + key + '", "cities":[';
 
-    for(i = 0; i < typesList.length; i++)
-      newDoc += '"' + typesList[i] + '",';
+    for(i = 0; i < cities.length; i++) {
+      newDoc += '{"name":"' + cities[i] + '", "attributes":[';
 
-    if(newDoc[newDoc.length - 1] == ',')
-      newDoc = newDoc.substring(0, newDoc.length - 1);
+      for(j = 0; j < cityAttr[i].length; j++)
+        newDoc += '{"name":"' + cityAttr[i][j] + '"},';
 
-    //add the attributes and their type
-    newDoc += '], "attributes":[';
+      if(newDoc[newDoc.length - 1] == ',')
+        newDoc = newDoc.substring(0, newDoc.length - 1);
 
-    //find the selected attributes
-    for(attr in typesAttrList)
-      if(typesAttrList[attr] != '')
-        newDoc += '{"name":"' + attr + '","type":"' + typesAttrList[attr] + '"},';
-
-    //remove last comma from newDoc
-    if(newDoc[newDoc.length - 1] == ',')
-      newDoc = newDoc.substring(0, newDoc.length - 1);
-
-    //add the cities and corresponding classes
-    newDoc += '], "cities":[';
-
-    for(city in cityClass)
-      newDoc += '{"name":"' + city + '", "class":"' + cityClass[city] + '"},';
+      newDoc += ']},';
+    }
 
     if(newDoc[newDoc.length - 1] == ',')
       newDoc = newDoc.substring(0, newDoc.length - 1);
@@ -257,45 +185,40 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
   }
 
   $scope.reset = function() {
-    typesList = [];
+    cityAttr = [[], []];
 
-    typesAttrList = {'Agencies':'', 'Agents':'', 'Beneficts':'', 'Big Data':'', 'Broadband Infrastructure':'', 'Citizens':'',
-    'Cloud Infrastructure':'', 'Cognitive Design':'', 'Collaboration':'', 'Communication':'', 'Community':'', 'Creativity':'',
-    'Cybersecurity':'', 'Data Analysis':'', 'Data Collecting':'', 'Data Reuse':'', 'Data Sharing':'', 'Decision Making':'', 'Economy':'',
-    'Education':'', 'Efficiency':'', 'Energy':'', 'Environmental Changes':'', 'Environmental Footprint':'', 'Funding':'', 'Globalization':'',
-    'Health':'', 'Human Infrastructure':'', 'Information System':'', 'Inner and Outer Factors':'', 'Innovation':'',
-    'Institutional Infrastructure':'', 'International':'', 'Internet of Things (IoT)':'', 'Investment':'', 'Local':'', 'Managers':'',
-    'Mobility':'', 'Municipalities':'', 'National':'', 'Open Data':'', 'Open Government':'', 'Open Government Data':'', 'Operationals':'',
-    'Opportunities':'', 'Organization':'', 'Policies':'', 'Politicians':'', 'Pollution':'', 'Privacy':'', 'Private Sector':'',
-    'Productivity':'', 'Projects':'', 'Public Services':'', 'Quality of Life':'', 'Real Time':'', 'Renewable Energy':'', 'Replicable Models':'',
-    'Research and Development (R&D)':'', 'Resources':'', 'Safety':'', 'Security':'', 'Sensor Devices':'', 'Sensors':'', 'Services':'',
-    'Smart':'', 'Social Learning':'', 'Solutions':'', 'Strategy':'', 'Surveillance':'', 'Sustainability':'', 'Systemic Holistic View':'',
-    'Technocratic':'', 'Transport Network':'', 'Ubiquitous Computing':'', 'Urban Growth':'', 'Urban Population':'', 'Urbanism':'',
-    'Value':'', 'Waste':'', 'Water':'', 'Wireless Ad Hoc Networks (WANET, ...)':'', 'Wireless Sensor Networks (WSN)':''};
+    attrList = ['Agencies', 'Agents', 'Beneficts', 'Big Data', 'Broadband Infrastructure', 'Citizens', 'Cloud Infrastructure',
+    'Cognitive Design', 'Collaboration', 'Communication', 'Community', 'Creativity', 'Cybersecurity', 'Data Analysis',
+    'Data Collecting', 'Data Reuse', 'Data Sharing', 'Decision Making', 'Economy', 'Education', 'Efficiency', 'Energy',
+    'Environmental Changes', 'Environmental Footprint', 'Funding', 'Globalization', 'Health', 'Human Infrastructure',
+    'Information System', 'Inner and Outer Factors', 'Innovation', 'Institutional Infrastructure', 'International',
+    'Internet of Things (IoT)', 'Investment', 'Local', 'Managers', 'Mobility', 'Municipalities', 'National', 'Open Data',
+    'Open Government', 'Open Government Data', 'Operationals', 'Opportunities', 'Organization', 'Policies', 'Politicians', 'Pollution',
+    'Privacy', 'Private Sector', 'Productivity', 'Projects', 'Public Services', 'Quality of Life', 'Real Time', 'Renewable Energy',
+    'Replicable Models', 'Research and Development (R&D)', 'Resources', 'Safety', 'Security', 'Sensor Devices', 'Sensors', 'Services',
+    'Smart', 'Social Learning', 'Solutions', 'Strategy', 'Surveillance', 'Sustainability', 'Systemic Holistic View', 'Technocratic',
+    'Transport Network', 'Ubiquitous Computing', 'Urban Growth', 'Urban Population', 'Urbanism', 'Value', 'Waste', 'Water',
+    'Wireless Ad Hoc Networks (WANET, ...)', 'Wireless Sensor Networks (WSN)'];
 
-    refreshTypes();
     refreshAttributes();
     refreshCities();
   }
 
-  $scope.reload = function() {
-    typesList = [];
+  $scope.reloadData = function() {
+    cityAttr = [[], []];
 
-    typesAttrList = {'Agencies':'', 'Agents':'', 'Beneficts':'', 'Big Data':'', 'Broadband Infrastructure':'', 'Citizens':'',
-    'Cloud Infrastructure':'', 'Cognitive Design':'', 'Collaboration':'', 'Communication':'', 'Community':'', 'Creativity':'',
-    'Cybersecurity':'', 'Data Analysis':'', 'Data Collecting':'', 'Data Reuse':'', 'Data Sharing':'', 'Decision Making':'', 'Economy':'',
-    'Education':'', 'Efficiency':'', 'Energy':'', 'Environmental Changes':'', 'Environmental Footprint':'', 'Funding':'', 'Globalization':'',
-    'Health':'', 'Human Infrastructure':'', 'Information System':'', 'Inner and Outer Factors':'', 'Innovation':'',
-    'Institutional Infrastructure':'', 'International':'', 'Internet of Things (IoT)':'', 'Investment':'', 'Local':'', 'Managers':'',
-    'Mobility':'', 'Municipalities':'', 'National':'', 'Open Data':'', 'Open Government':'', 'Open Government Data':'', 'Operationals':'',
-    'Opportunities':'', 'Organization':'', 'Policies':'', 'Politicians':'', 'Pollution':'', 'Privacy':'', 'Private Sector':'',
-    'Productivity':'', 'Projects':'', 'Public Services':'', 'Quality of Life':'', 'Real Time':'', 'Renewable Energy':'', 'Replicable Models':'',
-    'Research and Development (R&D)':'', 'Resources':'', 'Safety':'', 'Security':'', 'Sensor Devices':'', 'Sensors':'', 'Services':'',
-    'Smart':'', 'Social Learning':'', 'Solutions':'', 'Strategy':'', 'Surveillance':'', 'Sustainability':'', 'Systemic Holistic View':'',
-    'Technocratic':'', 'Transport Network':'', 'Ubiquitous Computing':'', 'Urban Growth':'', 'Urban Population':'', 'Urbanism':'',
-    'Value':'', 'Waste':'', 'Water':'', 'Wireless Ad Hoc Networks (WANET, ...)':'', 'Wireless Sensor Networks (WSN)':''};
-
-    cityClass = {};
+    attrList = ['Agencies', 'Agents', 'Beneficts', 'Big Data', 'Broadband Infrastructure', 'Citizens', 'Cloud Infrastructure',
+    'Cognitive Design', 'Collaboration', 'Communication', 'Community', 'Creativity', 'Cybersecurity', 'Data Analysis',
+    'Data Collecting', 'Data Reuse', 'Data Sharing', 'Decision Making', 'Economy', 'Education', 'Efficiency', 'Energy',
+    'Environmental Changes', 'Environmental Footprint', 'Funding', 'Globalization', 'Health', 'Human Infrastructure',
+    'Information System', 'Inner and Outer Factors', 'Innovation', 'Institutional Infrastructure', 'International',
+    'Internet of Things (IoT)', 'Investment', 'Local', 'Managers', 'Mobility', 'Municipalities', 'National', 'Open Data',
+    'Open Government', 'Open Government Data', 'Operationals', 'Opportunities', 'Organization', 'Policies', 'Politicians', 'Pollution',
+    'Privacy', 'Private Sector', 'Productivity', 'Projects', 'Public Services', 'Quality of Life', 'Real Time', 'Renewable Energy',
+    'Replicable Models', 'Research and Development (R&D)', 'Resources', 'Safety', 'Security', 'Sensor Devices', 'Sensors', 'Services',
+    'Smart', 'Social Learning', 'Solutions', 'Strategy', 'Surveillance', 'Sustainability', 'Systemic Holistic View', 'Technocratic',
+    'Transport Network', 'Ubiquitous Computing', 'Urban Growth', 'Urban Population', 'Urbanism', 'Value', 'Waste', 'Water',
+    'Wireless Ad Hoc Networks (WANET, ...)', 'Wireless Sensor Networks (WSN)'];
 
     getPreviousDoc();
   }
