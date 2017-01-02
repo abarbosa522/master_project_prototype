@@ -241,7 +241,7 @@ app.controller('SurveyController', ['$scope', '$http', function($scope, $http){
   //compose the json object and submit the form
   function postDoc(showSuccess) {
     //add the user's key and the types
-    var newDoc = '{"key":"' + key + '", "cities":[';
+    var newDoc = '{"number":"' + $scope.number + '", "key":"' + key + '", "cities":[';
 
     for(i = 0; i < cities.length; i++) {
       newDoc += '{"name":"' + cities[i] + '", "attributes":[';

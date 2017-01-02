@@ -74,7 +74,7 @@
             </tr>
             <tr ng-repeat = 'attribute in attributes'>
               <td>{{attribute.name}}</td>
-              <td ng-repeat = 'city in cities'>
+              <td ng-repeat = 'city in cities' ng-style = 'defineTdStyle(attribute.name, city.name)'>
                 <input type = 'checkbox' ng-checked = 'checkCityAttr(attribute.name, city.name)' ng-click = 'updateCityAttr(attribute.name, city.name)'>
               </td>
             </tr>
