@@ -45,12 +45,13 @@
         <table class = 'table table-bordered table-striped table-hover'>
           <thead>
             <tr>
-              <th class = 'text-center'>Name</th>
-              <th class = 'text-center'>Weight</th>
+              <th class = 'text-center col-md-2'>Name</th>
+              <th class = 'text-center col-md-2'>Weight</th>
               <th class = 'text-center'>Indifference Threshold</th>
               <th class = 'text-center'>Preference Threshold</th>
               <th class = 'text-center'>Veto Threshold</th>
               <th class = 'text-center'>Direction</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -90,6 +91,22 @@
               <td><button type = 'button' class = 'btn btn-danger btn-sm' ng-click = "deleteCriterion(criterion._id)">Delete</button></td>
             </tr>
           </tbody>
+        </table>
+      </div>
+
+      <div class = 'row'>
+        <table class = 'table'>
+          <thead>
+            <tr>
+              <td class = 'col-md-2'></td>
+              <td class = 'col-md-2'>Total: <strong>{{sumWeights}}</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </thead>
         </table>
       </div>
 

@@ -46,8 +46,8 @@
         <table class = 'table table-bordered table-striped table-hover'>
           <thead>
             <tr>
-              <th class = 'text-center'>Name</th>
-              <th class = 'text-center'>Weight</th>
+              <th class = 'text-center col-md-5'>Name</th>
+              <th class = 'text-center col-md-5'>Weight</th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +68,18 @@
               <td><button class = 'btn btn-danger btn-sm' ng-click = "deleteCriterion(criterion._id)">Delete</button></td>
             </tr>
           </tbody>
+        </table>
+      </div>
+
+      <div class = 'row'>
+        <table class = 'table'>
+          <thead>
+            <tr>
+              <td class = 'col-md-5'></td>
+              <td class = 'col-md-5'>Total: <strong>{{sumWeights}}</strong></td>
+              <td></td>
+            </tr>
+          </thead>
         </table>
       </div>
 

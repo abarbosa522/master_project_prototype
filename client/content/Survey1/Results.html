@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Survey 1</title>
+
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+
+    <!-- CSS Stylesheet -->
+    <link rel = 'stylesheet' type = 'text/css' href = '../../css/survey1.css' />
+
+    <!-- jQuery -->
+    <script type = 'text/javascript' src = '../../js/shared/jquery-3.1.0.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/jquery-ui-1.12.0/jquery-ui.js'></script>
+
+    <!-- AngularJS -->
+    <script src = '../../js/shared/angular.min.js'></script>
+
+    <!-- AngularJS Modules -->
+    <script src = '../../js/app.js'></script>
+
+    <!-- AngularJS Controllers -->
+    <script src = '../../js/controllers/Survey1/ResultsController.js'></script>
+
+    <!-- Bootstrap -->
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' />
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
+  </head>
+
+  <body ng-app = 'decisionSpace' ng-controller = 'ResultsController'>
+    <div class = 'container'>
+
+      <button class = 'btn btn-primary' onclick = "location.href = '../../index.html'">
+        <span class = 'glyphicon glyphicon-home'></span>
+      </button>
+
+      <div class = 'page-header'>
+        <h1>Results: Survey 1 - Smart Cities</h1>
+      </div>
+
+      <button class = 'btn btn-info' ng-click = 'JSONtoCSV()'>
+        <span class = 'glyphicon glyphicon-download'></span>
+        Download
+      </button>
+
+      <div ng-repeat = 'result in results'>
+        <h2>{{result.number}}</h2>
+        <div class = 'row'>
+          <table class = 'table table-bordered table-striped table-hover table-condensed tableCenter'>
+            <thead>
+              <tr>
+                <th class = 'text-center success col-md-3'>Cities</th>
+                <th class = 'text-center success col-md-3'></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td ng-repeat = 'city in result.cities'>{{city.name}}</td>
+              </tr>
+              <tr ng-repeat = 'attribute in result.all_attributes'>
+                <td ng-repeat = 'city in result.cities' ng-style = 'defineTdStyle(attribute.name, city.name, result)'>
+                  <div ng-if = 'attributeSelected(attribute.name, city.name, result)'>
+                    {{attribute.name}}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
