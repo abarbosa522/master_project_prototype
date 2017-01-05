@@ -92,39 +92,33 @@ app.controller('ResultsController', ['$scope', '$http', function($scope, $http){
     return false;
   }
 
-  $scope.JSONtoCSV = function() {
-    var CSV = '';
+  $scope.JSONtoCSV = function(city_index) {
+    var csv = '';
 
-    CSV += 'Number, City 1, Attributes City 1, City 2, Attributes City 2\r\n';
+    csv += 'Number, City ' + (city_index + 1) + ', Attributes City ' + (city_index + 1) + '\r\n';
 
     for(i = 0; i < $scope.originalResults.length; i++) {
-      CSV += $scope.originalResults[i].number + ',';
+      csv += $scope.originalResults[i].number + ',';
 
-      for(j = 0; j < $scope.originalResults[i].cities.length; j++) {
-        CSV += $scope.originalResults[i].cities[j].name + ',"';
+      csv += $scope.originalResults[i].cities[city_index].name + ',"';
 
-        for(k = 0; k < $scope.originalResults[i].cities[j].attributes.length; k++)
-          CSV += $scope.originalResults[i].cities[j].attributes[k].name + ',';
+      for(j = 0; j < $scope.originalResults[i].cities[city_index].attributes.length; j++)
+        csv += $scope.originalResults[i].cities[city_index].attributes[j].name + ',';
 
-        CSV = removeComma(CSV);
+      csv = removeComma(csv);
 
-        CSV += '",';
-      }
-
-      CSV = removeComma(CSV);
-
-      CSV += '\r\n';
+      csv += '\r\n';
     }
 
     //initialize file format
-    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+    var uri = 'data:text/csv;charset=utf-8,' + escape(csv);
 
     var link = document.createElement("a");
     link.href = uri;
 
     //set the visibility hidden so it will not effect the web-layout
     link.style = "visibility:hidden";
-    link.download = "results.csv";
+    link.download = "results-city" + (city_index + 1) + ".csv";
 
     //append the anchor tag and remove it after automatic click
     document.body.appendChild(link);
