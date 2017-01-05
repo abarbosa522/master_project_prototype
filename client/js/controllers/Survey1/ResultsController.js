@@ -95,19 +95,23 @@ app.controller('ResultsController', ['$scope', '$http', function($scope, $http){
   $scope.JSONtoCSV = function(city_index) {
     var csv = '';
 
-    csv += 'Number, City ' + (city_index + 1) + ', Attributes City ' + (city_index + 1) + '\r\n';
+    csv += 'Number,City ' + (city_index + 1) + ',Attributes City ' + (city_index + 1) + '\r\n';
 
     for(i = 0; i < $scope.originalResults.length; i++) {
       csv += $scope.originalResults[i].number + ',';
 
       csv += $scope.originalResults[i].cities[city_index].name + ',"';
 
-      for(j = 0; j < $scope.originalResults[i].cities[city_index].attributes.length; j++)
-        csv += $scope.originalResults[i].cities[city_index].attributes[j].name + ',';
+      for(j = 0; j < $scope.originalResults[i].cities[city_index].attributes.length; j++) {
+        if(j % 50 == 0 && j != 0)
+          csv += '\r\n';
 
-      csv = removeComma(csv);
+        csv += $scope.originalResults[i].cities[city_index].attributes[j].name + ', ';
+      }
 
-      csv += '\r\n';
+      csv = removeCommaCSV(csv);
+
+      csv += '"\r\n';
     }
 
     //initialize file format
@@ -131,6 +135,12 @@ app.controller('ResultsController', ['$scope', '$http', function($scope, $http){
     function removeComma(text) {
       if(text[text.length - 1] == ',')
         text = text.substring(0, text.length - 1);
+      return text;
+    }
+
+    function removeCommaCSV(text) {
+      if(text[text.length - 1] == ' ' && text[text.length - 2] == ',')
+        text = text.substring(0, text.length - 2);
       return text;
     }
 
