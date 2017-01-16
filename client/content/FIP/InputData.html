@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DecSpace - FIP Method</title>
+
+    <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+
+    <!-- CSS Stylesheet -->
+    <link rel = 'stylesheet' type = 'text/css' href = '../../css/fip.css' />
+
+    <!-- jQuery -->
+    <script type = 'text/javascript' src = '../../js/shared/jquery-3.1.0.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/jquery-ui-1.12.0/jquery-ui.js'></script>
+
+    <!-- AngularJS -->
+    <script src = '../../js/shared/angular.min.js'></script>
+
+    <!-- AngularJS Modules -->
+    <script src = '../../js/app.js'></script>
+
+    <!-- AngularJS Controllers -->
+    <script src = '../../js/controllers/FIP/FIPInputController.js'></script>
+
+    <!-- Bootstrap -->
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
+    <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css' />
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.js'></script>
+    <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
+  </head>
+
+  <body ng-app = 'decisionSpace' ng-controller = 'FIPInputController'>
+    <div class = 'container'>
+
+      <!-- top menu -->
+      <nav class = 'navbar navbar-default'>
+        <div class = 'container-fluid'>
+            <ul class = 'nav navbar-nav'>
+              <li><a href = '../../index.html'>Home</a></li>
+            </ul>
+        </div>
+      </nav>
+
+      <h1>Scoring Table</h1>
+
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover'>
+          <thead>
+            <tr>
+              <th></th>
+              <th ng-repeat = 'action in actions'>{{action.name}}</th>
+              <th>
+                <form class="form-inline">
+                  <input class = 'form-control' type = 'text' ng-model = 'new_action.name' placeholder = 'Add an Action'/>
+                  <button type = 'button' class = 'btn btn-success' ng-click = 'addAction()'>
+                    <span class = 'glyphicon glyphicon-plus'></span>
+                  </button>
+                </form>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat = 'criterion in criteria'>
+              <td>{{criterion.name}}</td>
+              <td ng-repeat = 'action in actions'>{{criterion.actions[0][action.name]}}</td>
+              <td>
+                <button class = 'btn btn-danger' ng-click = 'deleteCriterion(criterion.name)' >
+                  <span class = 'glyphicon glyphicon-remove'></span>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'new_criterion.name' placeholder = 'Add a Criterion'/>
+              </td>
+              <td ng-repeat = 'action in actions'>
+                <input class = 'form-control' type = 'number' ng-model = "models[action.name]"/>
+              </td>
+              <td>
+                <button type = 'button' class = 'btn btn-success' ng-click = 'addCriterion()'>
+                  <span class = 'glyphicon glyphicon-plus'></span>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td ng-repeat = 'action in actions'>
+                <button class = 'btn btn-danger' ng-click = 'deleteAction(action.name)' >
+                  <span class = 'glyphicon glyphicon-remove'></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h1>Typical Actions</h1>
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover'>
+          <thead>
+            <tr>
+              <th></th>
+              <th ng-repeat = 'action in actions'>{{action.name}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat = 'typical_action in typical_actions'>
+              <td>{{typical_action.name}}</td>
+              <td ng-repeat = 'action in actions'>{{typical_action.actions[0][action.name]}}</td>
+              <td>
+                <button class = 'btn btn-danger' ng-click = 'deleteTypicalAction(typical_action.name)' >
+                  <span class = 'glyphicon glyphicon-remove'></span>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'new_typical_action.name' placeholder = 'Add a Typical Action'/>
+              </td>
+              <td ng-repeat = 'action in actions'>
+                <input class = 'form-control' type = 'number' ng-model = "typical_actions_models[action.name]"/>
+              </td>
+              <td>
+                <button type = 'button' class = 'btn btn-success' ng-click = 'addTypicalAction()'>
+                  <span class = 'glyphicon glyphicon-plus'></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h1>Categories</h1>
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover'>
+          <thead>
+            <tr>
+              <th></th>
+              <th ng-repeat = 'typical_action in typical_actions'>{{typical_action.name}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat = 'category in categories'>
+              <td>{{category.name}}</td>
+              <td ng-repeat = 'typical_action in typical_actions'>{{category.typical_actions[0][typical_action.name]}}</td>
+              <td>
+                <button class = 'btn btn-danger' ng-click = 'deleteCategory(category.name)' >
+                  <span class = 'glyphicon glyphicon-remove'></span>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'new_category.name' placeholder = 'Add a Category'/>
+              </td>
+              <td ng-repeat = 'typical_action in typical_actions'>
+                <input type = 'checkbox' ng-model = "categories_models[typical_action.name]"/>
+              </td>
+              <td>
+                <button type = 'button' class = 'btn btn-success' ng-click = 'addCategory()'>
+                  <span class = 'glyphicon glyphicon-plus'></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </body>
+</html>
