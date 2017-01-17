@@ -291,9 +291,9 @@ app.delete('/Attributes/:id', function(req, res) {
 
 //FIP Method
 var db14 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['actions']);
-var db15 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['scoringtable']);
-var db16 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['categories']);
-var db17 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['typicalactions']);
+var db15 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['categories']);
+var db16 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['typicalactions']);
+var db17 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['criteria']);
 
 //Actions functions
 app.get('/FIPActions', function(req, res) {
@@ -315,74 +315,74 @@ app.delete('/FIPActions/:id', function(req, res) {
   });
 });
 
-//ScoringTable functions
-app.get('/FIPScoringTable', function(req, res) {
-  db15.scoringtable.find(function(err, doc) {
-    res.json(doc);
-  });
-});
-
-app.post('/FIPScoringTable', function(req, res) {
-  db15.scoringtable.insert(req.body, function(err, doc) {
-    res.json(doc);
-  });
-});
-
-app.delete('/FIPScoringTable', function(req, res) {
-  db15.scoringtable.remove(req.body, function(err, doc) {
-    res.json(doc);
-  });
-});
-
-app.delete('/FIPScoringTable/:id', function(req, res) {
-  var id = req.params.id;
-  db15.scoringtable.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
-    res.json(doc);
-  });
-});
-
 //Categories functions
 app.get('/FIPCategories', function(req, res) {
-  db16.categories.find(function(err, doc) {
+  db15.categories.find(function(err, doc) {
     res.json(doc);
   });
 });
 
 app.post('/FIPCategories', function(req, res) {
-  db16.categories.insert(req.body, function(err, doc) {
+  db15.categories.insert(req.body, function(err, doc) {
     res.json(doc);
   });
 });
 
 app.delete('/FIPCategories/:id', function(req, res) {
   var id = req.params.id;
-  db16.categories.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
+  db15.categories.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
     res.json(doc);
   });
 });
 
 //TypicalActions functions
 app.get('/FIPTypicalActions', function(req, res) {
-  db17.typicalactions.find(function(err, doc) {
+  db16.typicalactions.find(function(err, doc) {
     res.json(doc);
   });
 });
 
 app.post('/FIPTypicalActions', function(req, res) {
-  db17.typicalactions.insert(req.body, function(err, doc) {
+  db16.typicalactions.insert(req.body, function(err, doc) {
     res.json(doc);
   });
 });
 
 app.delete('/FIPTypicalActions', function(req, res) {
-  db17.typicalactions.remove(req.body, function(err, doc) {
+  db16.typicalactions.remove(req.body, function(err, doc) {
     res.json(doc);
   });
 });
 
 app.delete('/FIPTypicalActions/:id', function(req, res) {
   var id = req.params.id;
-  db17.typicalactions.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
+  db16.typicalactions.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
+    res.json(doc);
+  });
+});
+
+//Criteria functions
+app.get('/FIPCriteria', function(req, res) {
+  db17.criteria.find(function(err, doc) {
+    res.json(doc);
+  });
+});
+
+app.post('/FIPCriteria', function(req, res) {
+  db17.criteria.insert(req.body, function(err, doc) {
+    res.json(doc);
+  });
+});
+
+app.delete('/FIPCriteria', function(req, res) {
+  db17.criteria.remove(req.body, function(err, doc) {
+    res.json(doc);
+  });
+});
+
+app.delete('/FIPCriteria/:id', function(req, res) {
+  var id = req.params.id;
+  db17.criteria.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
     res.json(doc);
   });
 });

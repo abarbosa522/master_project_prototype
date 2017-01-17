@@ -1,20 +1,19 @@
 app.controller('FIPInputController', ['$scope', '$http', '$window', function($scope, $http, $window) {
 
   //store the new criterion name and values
-  $scope.models = {};
-  //store the new typical action name and values
+  $scope.criteria_models = {};
+  $scope.action_models = {};
   $scope.typical_actions_models = {};
   $scope.categories_models = {};
 
-  //store the document ids of the criteria
-  var criteria_ids = {};
-  //store the document ids of the actions
+  //store the document ids of the scoring table
+  var criteria_ids = {}
   var actions_ids = {};
   var typical_actions_ids = {};
   var categories_ids = {};
 
   function refreshCriteria() {
-    $http.get('/FIPScoringTable').success(function(response) {
+    $http.get('/FIPCriteria').success(function(response) {
       //update table
       $scope.criteria = response;
 
@@ -30,7 +29,6 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
 
       for(action in response)
         actions_ids[response[action].name] = response[action]._id;
-
     });
   }
 
@@ -55,10 +53,10 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
   }
 
   $scope.addCriterion = function() {
-    var criterionText = '{"name":"' + $scope.new_criterion.name + '","actions":[{';
+    var criterionText = '{"name":"' + $scope.new_criterion.name + '","parameters":[{';
 
-    for(model in $scope.models)
-      criterionText += '"' + model + '":"' + $scope.models[model] + '",';
+    for(model in $scope.criteria_models)
+      criterionText += '"' + model + '":"' + $scope.criteria_models[model] + '",';
 
     if(criterionText[criterionText.length - 1] == ',')
       criterionText = criterionText.substring(0, criterionText.length - 1);
@@ -67,19 +65,32 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
 
     var new_criterion = JSON.parse(criterionText);
 
-    $http.post('/FIPScoringTable', new_criterion).success(function(response) {
+    $http.post('/FIPCriteria', new_criterion).success(function(response) {
       //clear input field
       $scope.new_criterion = '';
-      $scope.models = {};
+      $scope.criteria_models = {};
 
       refreshCriteria();
     });
   }
 
   $scope.addAction = function() {
-    $http.post('/FIPActions', $scope.new_action).success(function(response) {
+    var actionText = '{"name":"' + $scope.new_action.name + '","criteria":[{';
+
+    for(model in $scope.action_models)
+      actionText += '"' + model + '":"' + $scope.action_models[model] + '",';
+
+    if(actionText[actionText.length - 1] == ',')
+      actionText = actionText.substring(0, actionText.length - 1);
+
+    actionText += '}]}';
+
+    var new_action = JSON.parse(actionText);
+
+    $http.post('/FIPActions', new_action).success(function(response) {
       //clear input field
       $scope.new_action = '';
+      $scope.action_models = {};
 
       refreshActions();
     });
@@ -108,7 +119,6 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
   }
 
   $scope.addCategory = function() {
-    console.log($scope.categories_models);
     var categoryText = '{"name":"' + $scope.new_category.name + '","typical_actions":[{';
 
     for(model in $scope.categories_models)
@@ -131,7 +141,7 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
   }
 
   $scope.deleteCriterion = function(criterion_name) {
-    $http.delete('/FIPScoringTable/' + criteria_ids[criterion_name]).success(function(response) {
+    $http.delete('/FIPCriteria/' + criteria_ids[criterion_name]).success(function(response) {
       refreshCriteria();
     });
   }
@@ -153,6 +163,7 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
       refreshCategories();
     });
   }
+
   refreshCriteria();
   refreshActions();
   refreshTypicalActions();

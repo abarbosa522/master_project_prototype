@@ -40,28 +40,26 @@
         </div>
       </nav>
 
-      <h1>Scoring Table</h1>
+      <h1>Criteria</h1>
 
       <div class = 'row'>
         <table class = 'table table-bordered table-striped table-hover'>
           <thead>
             <tr>
               <th></th>
-              <th ng-repeat = 'action in actions'>{{action.name}}</th>
-              <th>
-                <form class="form-inline">
-                  <input class = 'form-control' type = 'text' ng-model = 'new_action.name' placeholder = 'Add an Action'/>
-                  <button type = 'button' class = 'btn btn-success' ng-click = 'addAction()'>
-                    <span class = 'glyphicon glyphicon-plus'></span>
-                  </button>
-                </form>
-              </th>
+              <th>Preference Threshold</th>
+              <th>Indifference Threshold</th>
+              <th>Veto Threshold</th>
+              <th>Weight</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat = 'criterion in criteria'>
               <td>{{criterion.name}}</td>
-              <td ng-repeat = 'action in actions'>{{criterion.actions[0][action.name]}}</td>
+              <td>{{criterion.parameters[0]['preference']}}</td>
+              <td>{{criterion.parameters[0]['indifference']}}</td>
+              <td>{{criterion.parameters[0]['veto']}}</td>
+              <td>{{criterion.parameters[0]['weight']}}</td>
               <td>
                 <button class = 'btn btn-danger' ng-click = 'deleteCriterion(criterion.name)' >
                   <span class = 'glyphicon glyphicon-remove'></span>
@@ -72,8 +70,17 @@
               <td>
                 <input class = 'form-control' type = 'text' ng-model = 'new_criterion.name' placeholder = 'Add a Criterion'/>
               </td>
-              <td ng-repeat = 'action in actions'>
-                <input class = 'form-control' type = 'number' ng-model = "models[action.name]"/>
+              <td>
+                <input class = 'form-control' type = 'number' ng-model = "criteria_models['preference']"/>
+              </td>
+              <td>
+                <input class = 'form-control' type = 'number' ng-model = "criteria_models['indifference']"/>
+              </td>
+              <td>
+                <input class = 'form-control' type = 'number' ng-model = "criteria_models['veto']"/>
+              </td>
+              <td>
+                <input class = 'form-control' type = 'number' ng-model = "criteria_models['weight']"/>
               </td>
               <td>
                 <button type = 'button' class = 'btn btn-success' ng-click = 'addCriterion()'>
@@ -81,11 +88,40 @@
                 </button>
               </td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h1>Scoring Table</h1>
+
+      <div class = 'row'>
+        <table class = 'table table-bordered table-striped table-hover'>
+          <thead>
             <tr>
-              <td></td>
-              <td ng-repeat = 'action in actions'>
+              <th></th>
+              <th ng-repeat = 'criterion in criteria'>{{criterion.name}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat = 'action in actions'>
+              <td>{{action.name}}</td>
+              <td ng-repeat = 'criterion in criteria'>{{action.criteria[0][criterion.name]}}</td>
+              <td>
                 <button class = 'btn btn-danger' ng-click = 'deleteAction(action.name)' >
                   <span class = 'glyphicon glyphicon-remove'></span>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class = 'form-control' type = 'text' ng-model = 'new_action.name' placeholder = 'Add an Action'/>
+              </td>
+              <td ng-repeat = 'criterion in criteria'>
+                <input class = 'form-control' type = 'number' ng-model = "action_models[criterion.name]"/>
+              </td>
+              <td>
+                <button type = 'button' class = 'btn btn-success' ng-click = 'addAction()'>
+                  <span class = 'glyphicon glyphicon-plus'></span>
                 </button>
               </td>
             </tr>
