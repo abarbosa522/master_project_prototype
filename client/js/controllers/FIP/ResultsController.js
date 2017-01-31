@@ -21,15 +21,9 @@ app.controller('ResultsController', ['$scope', '$http', '$window', function($sco
     var action_a_value = Number(all_actions[action_a]['criteria'][0][criterion_name]);
     var action_b_value = Number(all_actions[action_b]['criteria'][0][criterion_name]);
 
-    //console.log('criterion_name: ' + criterion_name + ',criterion_preference: ' + criterion_preference + ',criterion_indifference: ' + criterion_indifference);
-  //  console.log('action_value_a ' + action_a_value + ', action_b_value ' + action_b_value);
-
     var numerator = criterion_preference - Math.min(action_b_value - action_a_value, criterion_preference);
     var denominator = criterion_preference - Math.min(action_b_value - action_a_value, criterion_indifference);
     var relation = numerator / denominator;
-
-    //console.log('action_b - action_a: ' + (action_b_value - action_a_value) + ',min: ' + Math.min(action_b_value - action_a_value, criterion_preference));
-    //console.log('numerator: ' + numerator + ',denominator: ' + denominator + ', relation: ' + relation);
 
     return relation;
   }
@@ -44,8 +38,8 @@ app.controller('ResultsController', ['$scope', '$http', '$window', function($sco
       var weight = Number(categories[category]['weights'][0][criteria[criterion]['name']]);
       var Ij = symmetricOutrankingRelations(criterion, action_a, action_b);
       totalSum += weight * Ij;
-      //console.log('Ij: ' + Ij + ',weight: ' + weight);
     }
+
     return totalSum;
   }
 
@@ -79,7 +73,10 @@ app.controller('ResultsController', ['$scope', '$http', '$window', function($sco
   }
 
   function indifferenceIndex(category, action_a, action_b) {
-    return Math.max(concordanceIndex(category, action_a, action_b), 1 - discordanceIndex(action_a, action_b));
+    var c = concordanceIndex(category, action_a, action_b);
+    var d = discordanceIndex(action_a, action_b);
+    console.log('action_a: ' + all_actions[action_a]['name'] + ', action_b: ' + all_actions[action_b]['name'] + ', concordance: ' + c + ', discordance: ' + d);
+    return Math.min(c, 1 - d);
   }
 
   function membershipDegree(category, action_a) {
