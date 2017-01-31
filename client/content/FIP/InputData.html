@@ -19,7 +19,7 @@
     <script src = '../../js/app.js'></script>
 
     <!-- AngularJS Controllers -->
-    <script src = '../../js/controllers/FIP/FIPInputController.js'></script>
+    <script src = '../../js/controllers/FIP/InputDataController.js'></script>
 
     <!-- Bootstrap -->
     <link rel = 'stylesheet' href = '../../js/shared/bootstrap-3.3.7-dist/css/bootstrap.min.css' />
@@ -28,7 +28,7 @@
     <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
   </head>
 
-  <body ng-app = 'decisionSpace' ng-controller = 'FIPInputController'>
+  <body ng-app = 'decisionSpace' ng-controller = 'InputDataController'>
     <div class = 'container'>
 
       <!-- top menu -->
@@ -50,7 +50,7 @@
               <th>Preference Threshold</th>
               <th>Indifference Threshold</th>
               <th>Veto Threshold</th>
-              <th>Weight</th>
+              <th>Direction</th>
             </tr>
           </thead>
           <tbody>
@@ -59,7 +59,7 @@
               <td>{{criterion.parameters[0]['preference']}}</td>
               <td>{{criterion.parameters[0]['indifference']}}</td>
               <td>{{criterion.parameters[0]['veto']}}</td>
-              <td>{{criterion.parameters[0]['weight']}}</td>
+              <td>{{criterion.parameters[0]['direction']}}</td>
               <td>
                 <button class = 'btn btn-danger' ng-click = 'deleteCriterion(criterion.name)' >
                   <span class = 'glyphicon glyphicon-remove'></span>
@@ -80,7 +80,10 @@
                 <input class = 'form-control' type = 'number' ng-model = "criteria_models['veto']"/>
               </td>
               <td>
-                <input class = 'form-control' type = 'number' ng-model = "criteria_models['weight']"/>
+                <select ng-model = "criteria_models['direction']">
+                  <option value = 'Maximize'>Maximize</option>
+                  <option value = 'Minimize'>Minimize</option>
+                </select>
               </td>
               <td>
                 <button type = 'button' class = 'btn btn-success' ng-click = 'addCriterion()'>
@@ -135,13 +138,13 @@
           <thead>
             <tr>
               <th></th>
-              <th ng-repeat = 'action in actions'>{{action.name}}</th>
+              <th ng-repeat = 'criterion in criteria'>{{criterion.name}}</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat = 'typical_action in typical_actions'>
               <td>{{typical_action.name}}</td>
-              <td ng-repeat = 'action in actions'>{{typical_action.actions[0][action.name]}}</td>
+              <td ng-repeat = 'criterion in criteria'>{{typical_action.criteria[0][criterion.name]}}</td>
               <td>
                 <button class = 'btn btn-danger' ng-click = 'deleteTypicalAction(typical_action.name)' >
                   <span class = 'glyphicon glyphicon-remove'></span>
@@ -152,8 +155,8 @@
               <td>
                 <input class = 'form-control' type = 'text' ng-model = 'new_typical_action.name' placeholder = 'Add a Typical Action'/>
               </td>
-              <td ng-repeat = 'action in actions'>
-                <input class = 'form-control' type = 'number' ng-model = "typical_actions_models[action.name]"/>
+              <td ng-repeat = 'criterion in criteria'>
+                <input class = 'form-control' type = 'number' ng-model = "typical_actions_models[criterion.name]"/>
               </td>
               <td>
                 <button type = 'button' class = 'btn btn-success' ng-click = 'addTypicalAction()'>
@@ -172,12 +175,14 @@
             <tr>
               <th></th>
               <th ng-repeat = 'typical_action in typical_actions'>{{typical_action.name}}</th>
+              <th ng-repeat = 'criterion in criteria'>{{criterion.name}}</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat = 'category in categories'>
               <td>{{category.name}}</td>
               <td ng-repeat = 'typical_action in typical_actions'>{{category.typical_actions[0][typical_action.name]}}</td>
+              <td ng-repeat = 'criterion in criteria'>{{category.weights[0][criterion.name]}}</td>
               <td>
                 <button class = 'btn btn-danger' ng-click = 'deleteCategory(category.name)' >
                   <span class = 'glyphicon glyphicon-remove'></span>
@@ -191,6 +196,9 @@
               <td ng-repeat = 'typical_action in typical_actions'>
                 <input type = 'checkbox' ng-model = "categories_models[typical_action.name]"/>
               </td>
+              <td ng-repeat = 'criterion in criteria'>
+                <input type = 'number' ng-model = 'categories_weights_models[criterion.name]' placeholder = 'Set the Weight'/>
+              </td>
               <td>
                 <button type = 'button' class = 'btn btn-success' ng-click = 'addCategory()'>
                   <span class = 'glyphicon glyphicon-plus'></span>
@@ -200,6 +208,30 @@
           </tbody>
         </table>
       </div>
+
+      <h1>Cutting Threshold</h1>
+      <div class = 'row'>
+        <table>
+          <tr>
+            <td>
+              <div class = 'input-group'>
+                <input type = 'number' class = 'form-control' ng-model = 'cuttingthreshold.value'>
+                <span class = 'input-group-btn'>
+                  <button type = 'button' class = 'btn btn-success' ng-click = 'addCuttingThreshold()'>
+                    <span class = 'glyphicon glyphicon-plus'></span>
+                  </button>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <br>
+
+      <button type = 'button' class = 'btn btn-primary' ng-click = 'getResults()'>
+        Get Results
+      </button>
 
     </div>
   </body>

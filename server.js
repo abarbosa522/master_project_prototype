@@ -294,6 +294,7 @@ var db14 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.co
 var db15 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['categories']);
 var db16 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['typicalactions']);
 var db17 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['criteria']);
+var db18 = mongojs('mongodb://' + username + ':' + password + '@ds111469.mlab.com:11469/fip', ['cuttingthreshold']);
 
 //Actions functions
 app.get('/FIPActions', function(req, res) {
@@ -383,6 +384,25 @@ app.delete('/FIPCriteria', function(req, res) {
 app.delete('/FIPCriteria/:id', function(req, res) {
   var id = req.params.id;
   db17.criteria.remove({_id: mongojs.ObjectId(id)}, function(err, doc) {
+    res.json(doc);
+  });
+});
+
+//cuttingthreshold functions
+app.get('/FIPCuttingThreshold', function(req, res) {
+  db18.cuttingthreshold.find(function(err, doc) {
+    res.json(doc);
+  });
+});
+
+app.post('/FIPCuttingThreshold', function(req, res) {
+  db18.cuttingthreshold.insert(req.body, function(err, doc) {
+    res.json(doc);
+  });
+});
+
+app.delete('/FIPCuttingThreshold', function(req, res) {
+  db18.cuttingthreshold.remove(req.body, function(err, doc) {
     res.json(doc);
   });
 });

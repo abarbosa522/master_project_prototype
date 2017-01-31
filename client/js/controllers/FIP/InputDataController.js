@@ -1,10 +1,12 @@
-app.controller('FIPInputController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+app.controller('InputDataController', ['$scope', '$http', '$window', function($scope, $http, $window) {
 
   //store the new criterion name and values
   $scope.criteria_models = {};
   $scope.action_models = {};
   $scope.typical_actions_models = {};
   $scope.categories_models = {};
+  $scope.categories_weights_models = {};
+  $scope.cuttingthreshold;
 
   //store the document ids of the scoring table
   var criteria_ids = {}
@@ -49,6 +51,12 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
 
       for(category in response)
         categories_ids[response[category].name] = response[category]._id;
+    });
+  }
+
+  function refreshCuttingThreshold() {
+    $http.get('/FIPCuttingThreshold').success(function(response) {
+      $scope.cuttingthreshold = response[0];
     });
   }
 
@@ -97,7 +105,7 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
   }
 
   $scope.addTypicalAction = function() {
-    var actionText = '{"name":"' + $scope.new_typical_action.name + '","actions":[{';
+    var actionText = '{"name":"' + $scope.new_typical_action.name + '","criteria":[{';
 
     for(model in $scope.typical_actions_models)
       actionText += '"' + model + '":"' + $scope.typical_actions_models[model] + '",';
@@ -127,6 +135,14 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
     if(categoryText[categoryText.length - 1] == ',')
       categoryText = categoryText.substring(0, categoryText.length - 1);
 
+    categoryText += '}],"weights":[{';
+
+    for(model in $scope.categories_weights_models)
+      categoryText += '"' + model + '":"' + $scope.categories_weights_models[model] + '",';
+
+    if(categoryText[categoryText.length - 1] == ',')
+      categoryText = categoryText.substring(0, categoryText.length - 1);
+
     categoryText += '}]}';
 
     var new_category = JSON.parse(categoryText);
@@ -135,9 +151,19 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
       //clear input field
       $scope.new_category = '';
       $scope.categories_models = {};
+      $scope.categories_weights_models = {};
 
       refreshCategories();
     });
+  }
+
+  $scope.addCuttingThreshold = function() {
+    $http.delete('/FIPCuttingThreshold').success(function(response) {
+      $http.post('/FIPCuttingThreshold', $scope.cuttingthreshold).success(function(response) {
+        $scope.cuttingthreshold = response;
+      });
+    });
+
   }
 
   $scope.deleteCriterion = function(criterion_name) {
@@ -164,8 +190,13 @@ app.controller('FIPInputController', ['$scope', '$http', '$window', function($sc
     });
   }
 
+  $scope.getResults = function() {
+    $window.location.href = 'Results.html';
+  }
+
   refreshCriteria();
   refreshActions();
   refreshTypicalActions();
   refreshCategories();
+  refreshCuttingThreshold();
 }]);
