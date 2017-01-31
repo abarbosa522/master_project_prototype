@@ -73,10 +73,7 @@ app.controller('ResultsController', ['$scope', '$http', '$window', function($sco
   }
 
   function indifferenceIndex(category, action_a, action_b) {
-    var c = concordanceIndex(category, action_a, action_b);
-    var d = discordanceIndex(action_a, action_b);
-    console.log('action_a: ' + all_actions[action_a]['name'] + ', action_b: ' + all_actions[action_b]['name'] + ', concordance: ' + c + ', discordance: ' + d);
-    return Math.min(c, 1 - d);
+    return Math.min(concordanceIndex(category, action_a, action_b), 1 - discordanceIndex(action_a, action_b));
   }
 
   function membershipDegree(category, action_a) {
@@ -124,129 +121,6 @@ app.controller('ResultsController', ['$scope', '$http', '$window', function($sco
     }
 
     return (1 - max_value);
-  }
-
-  function getConcordanceResults() {
-    var concordance_text = '{"categories":[';
-
-    for(category in categories) {
-      concordance_text += '{"name":"' + categories[category]['name'] + '","results":[';
-
-      for(typical_action in categories[category]['typical_actions'][0]) {
-        var typical_index;
-        //find the position of typical_action in all_actions
-        for(action_index in all_actions)
-          if(all_actions[action_index]['name'] == typical_action)
-            typical_index = action_index;
-
-        for(action in actions) {
-          //console.log('action ' + all_actions[action]['name'] + ', typical_index ' + all_actions[typical_index]['name']);
-          var result = Math.round(concordanceIndex(category, action, typical_index) * 100) / 100;
-          //console.log(result);
-          concordance_text += '{"action":"' + all_actions[action]['name'] + '","typical_action":"' + all_actions[typical_index]['name'] + '","result":"' + result + '"},';
-        }
-      }
-      if(concordance_text[concordance_text.length - 1] == ',')
-        concordance_text = concordance_text.substring(0, concordance_text.length - 1);
-
-      concordance_text += ']},'
-    }
-    if(concordance_text[concordance_text.length - 1] == ',')
-      concordance_text = concordance_text.substring(0, concordance_text.length - 1);
-
-    concordance_text += ']}';
-    //console.log(concordance_text);
-    $scope.concordance_indices = JSON.parse(concordance_text);
-  }
-
-  function getDiscordanceResults() {
-    var concordance_text = '{"categories":[';
-
-    for(category in categories) {
-      concordance_text += '{"name":"' + categories[category]['name'] + '","results":[';
-
-      for(typical_action in categories[category]['typical_actions'][0]) {
-        var typical_index;
-        //find the position of typical_action in all_actions
-        for(action_index in all_actions)
-          if(all_actions[action_index]['name'] == typical_action)
-            typical_index = action_index;
-
-        for(action in actions) {
-          //console.log('action ' + action + ', typical_index ' + typical_index);
-          var result = Math.round(discordanceIndex(action, typical_index) * 100) / 100;
-          //console.log(result);
-          concordance_text += '{"action":"' + all_actions[action]['name'] + '","typical_action":"' + all_actions[typical_index]['name'] + '","result":"' + result + '"},';
-        }
-      }
-      if(concordance_text[concordance_text.length - 1] == ',')
-        concordance_text = concordance_text.substring(0, concordance_text.length - 1);
-
-      concordance_text += ']},'
-    }
-    if(concordance_text[concordance_text.length - 1] == ',')
-      concordance_text = concordance_text.substring(0, concordance_text.length - 1);
-
-    concordance_text += ']}';
-    //console.log(concordance_text);
-    $scope.discordance_indices = JSON.parse(concordance_text);
-  }
-
-  function getIndifferenceResults() {
-    var concordance_text = '{"categories":[';
-
-    for(category in categories) {
-      concordance_text += '{"name":"' + categories[category]['name'] + '","results":[';
-
-      for(typical_action in categories[category]['typical_actions'][0]) {
-        var typical_index;
-        //find the position of typical_action in all_actions
-        for(action_index in all_actions)
-          if(all_actions[action_index]['name'] == typical_action)
-            typical_index = action_index;
-
-        for(action in actions) {
-          //console.log('action ' + action + ', typical_index ' + typical_index);
-          var result = Math.round(indifferenceIndex(category, action, typical_index) * 100) / 100;
-          //console.log(result);
-          concordance_text += '{"action":"' + all_actions[action]['name'] + '","typical_action":"' + all_actions[typical_index]['name'] + '","result":"' + result + '"},';
-        }
-      }
-      if(concordance_text[concordance_text.length - 1] == ',')
-        concordance_text = concordance_text.substring(0, concordance_text.length - 1);
-
-      concordance_text += ']},'
-    }
-    if(concordance_text[concordance_text.length - 1] == ',')
-      concordance_text = concordance_text.substring(0, concordance_text.length - 1);
-
-    concordance_text += ']}';
-    //console.log(concordance_text);
-    $scope.indifference_indices = JSON.parse(concordance_text);
-  }
-
-  function getMembershipResults() {
-    var concordance_text = '{"categories":[';
-
-    for(category in categories) {
-      concordance_text += '{"name":"' + categories[category]['name'] + '","results":[';
-
-      for(new_action in actions) {
-        var result = Math.round(membershipDegree(category, new_action) * 100) / 100;
-        concordance_text += '{"action":"' + all_actions[new_action]['name'] + '","result":"' + result + '"},';
-      }
-
-      if(concordance_text[concordance_text.length - 1] == ',')
-        concordance_text = concordance_text.substring(0, concordance_text.length - 1);
-
-      concordance_text += ']},'
-    }
-    if(concordance_text[concordance_text.length - 1] == ',')
-      concordance_text = concordance_text.substring(0, concordance_text.length - 1);
-
-    concordance_text += ']}';
-    //console.log(concordance_text);
-    $scope.membership_indices = JSON.parse(concordance_text);
   }
 
   function getCripAssignmentResults() {
@@ -297,14 +171,6 @@ app.controller('ResultsController', ['$scope', '$http', '$window', function($sco
 
               //join list of actions and typical actions
               all_actions = extend(typical_actions, actions_aux);
-
-              getConcordanceResults();
-
-              getDiscordanceResults();
-
-              getIndifferenceResults();
-
-              getMembershipResults();
 
               getCripAssignmentResults();
             });

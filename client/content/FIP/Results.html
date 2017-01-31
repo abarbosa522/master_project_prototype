@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>DecSpace - FIP Method Results</title>
+    <title>Master Project Prototype - FIP Method Results</title>
 
     <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
 
@@ -28,7 +28,7 @@
     <script type = 'text/javascript' src = '../../js/shared/bootstrap-3.3.7-dist/js/bootstrap.min.js'></script>
   </head>
 
-  <body ng-app = 'decisionSpace' ng-controller = 'ResultsController'>
+  <body ng-app = 'master_project_prototype' ng-controller = 'ResultsController'>
     <div class = 'container'>
 
       <!-- top menu -->
@@ -39,46 +39,6 @@
             </ul>
         </div>
       </nav>
-
-      <h1>Concordance Indices</h1>
-
-      <div ng-repeat = 'category in concordance_indices.categories'>
-        <h2>{{category.name}}</h2>
-
-        <div ng-repeat = 'result in category.results'>
-          <p>{{result.action}}, {{result.typical_action}}: {{result.result}}</p>
-        </div>
-      </div>
-
-      <h1>Discordance Indices</h1>
-
-      <div ng-repeat = 'category in discordance_indices.categories'>
-        <h2>{{category.name}}</h2>
-
-        <div ng-repeat = 'result in category.results'>
-          <p>{{result.action}}, {{result.typical_action}}: {{result.result}}</p>
-        </div>
-      </div>
-
-      <h1>Indifference Indices</h1>
-
-      <div ng-repeat = 'category in indifference_indices.categories'>
-        <h2>{{category.name}}</h2>
-
-        <div ng-repeat = 'result in category.results'>
-          <p>{{result.action}}, {{result.typical_action}}: {{result.result}}</p>
-        </div>
-      </div>
-
-      <h1>Membership Indices</h1>
-
-      <div ng-repeat = 'category in membership_indices.categories'>
-        <h2>{{category.name}}</h2>
-
-        <div ng-repeat = 'result in category.results'>
-          <p>{{result.action}}: {{result.result}}</p>
-        </div>
-      </div>
 
       <h1>Crisp Assignments</h1>
 
